@@ -24,7 +24,9 @@ class PostRequest extends FormRequest
     public function rules()
     {
         return [
-            'message' => 'required|max:500'
+            'message' => 'required|max:500',
+            'publishDate' => 'required|date_format:d.m.Y H:i|before:today',
+            'promo' => 'required|integer'
         ];
     }
 }

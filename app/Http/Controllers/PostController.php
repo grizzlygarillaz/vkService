@@ -9,6 +9,7 @@ use App\Http\Requests\PostRequest;
 use App\Models\Post;
 use App\Models\Project;
 use App\Models\Photo;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class PostController extends Controller
 {
@@ -49,8 +50,9 @@ class PostController extends Controller
             $photo = "photo{$photo['owner_id']}_{$photo['id']}";
             $message = $this->token->replaceTags($project->id,$baseMessage);
             $group = $groups[rand(0, count($groups) - 1)];
-            $this->token->sendPost($group, $message, [$photo]);
+            $this->token->sendDeferredPost($group, $message, $request->publishDate, [$photo]);
             usleep(500000);
+            break;
         }
         return true;
     }
@@ -63,6 +65,7 @@ class PostController extends Controller
 
     public function sendPost(PostRequest $request) {
         $this->sendPromo($request);
-        return back()->withInput();
+        Alert::toast('Пост успешно отправлен', 'success');
+        return back();
     }
 }

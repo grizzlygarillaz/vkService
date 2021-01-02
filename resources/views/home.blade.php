@@ -1,6 +1,6 @@
 @extends('layout.sidenav')
 @section('content')
-    <div class="mt-3">
+    <div class="">
         <h2 class="mb-4">Vk Service</h2>
         <p>
             <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui, recusandae?</span>

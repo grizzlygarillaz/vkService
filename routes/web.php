@@ -23,4 +23,4 @@ Route::get('/', function () {
 
 Route::get('/post', [PostController::class, 'addPost']);
 
-Route::post('/post/{request}', [PostController::class, 'sendPost']);
+Route::post('/post', [PostController::class, 'sendPost']);

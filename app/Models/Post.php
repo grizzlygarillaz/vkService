@@ -10,6 +10,7 @@ use App\Models\Vk;
 class Post extends Vk
 {
     use HasFactory;
+
     protected $methodType = 'wall';
 
     /**
@@ -18,11 +19,11 @@ class Post extends Vk
      * @param $dateTime - дата публикации
      * @param array $photoIds - идентификатор фото
      */
-    public function sendDeferredPost ($groupId, $message, $dateTime, array $photoIds = [])
+    public function sendDeferredPost($groupId, $message, $dateTime, array $photoIds = [])
     {
         $groupId = -$groupId;
-        $dateTime = date_create($dateTime);
-        $dateTime = date_timestamp_get($dateTime);
+        $dateTime = date_create($dateTime)->format('U');
+        $dateTime = $dateTime - 60 * 60 * 3;
         $media = '';
         $request = [
             "owner_id" => $groupId,
@@ -32,7 +33,7 @@ class Post extends Vk
         ];
 
         foreach ($photoIds as $key => $id) {
-            $media .= "photo{$groupId}_$id";
+            $media .= $id;
             if (array_key_exists($key + 1, $photoIds)) {
                 $media .= ',';
             }
@@ -40,11 +41,10 @@ class Post extends Vk
         if ($media != '') {
             $request += ['attachments' => $media];
         }
-
         return $this->apiResult('post', $request);
     }
 
-    public function sendPost ($groupId, $message, array $photoIds = [])
+    public function sendPost($groupId, $message, array $photoIds = [])
     {
         $groupId = -$groupId;
         $media = '';
@@ -66,7 +66,7 @@ class Post extends Vk
         return $this->apiResult('post', $request);
     }
 
-    public function getTags ()
+    public function getTags()
     {
         return DB::table('tags')->get();
     }
@@ -76,7 +76,7 @@ class Post extends Vk
         $project = DB::table('projects')->where('id', '=', $project)->get()->first();
         $tags = $this->getTags();
         foreach ($tags as $tag) {
-            if (strstr($message, $tag->tag)) {
+            if (strstr($message, $tag->tag) && property_exists($project, $tag->property) && $project->{$tag->property} != null) {
                 $message = str_replace($tag->tag, $project->{$tag->property}, $message);
             }
         }
