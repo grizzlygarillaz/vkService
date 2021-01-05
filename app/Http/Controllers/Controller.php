@@ -13,7 +13,8 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public static function getRoutes () {
+    public static function getRoutes()
+    {
         $routes = Route::getRoutes()->get();
         $webRoutes = [];
         foreach ($routes as $route) {
@@ -23,5 +24,16 @@ class Controller extends BaseController
             }
         }
         return $webRoutes;
+    }
+
+    protected function makeInput($description, $field, $data = null, $type = 'text')
+    {
+        $value = ($data != null) ? "value='$data'" : '';
+        return <<<EOT
+<div class="input-group mb-3">
+  <span class="input-group-text" id="$field">$description:</span>
+  <input type="$type" class="form-control bg-white" readonly placeholder="Нет данных..." aria-label="$description" $value aria-describedby="$field">
+</div>
+EOT;
     }
 }

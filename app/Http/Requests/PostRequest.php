@@ -25,7 +25,7 @@ class PostRequest extends FormRequest
     {
         return [
             'message' => 'required|max:500',
-            'publishDate' => 'required|date_format:d.m.Y H:i|before:today',
+            'publishDate' => 'required|date_format:d.m.Y H:i|after:today',
             'promo' => 'required|integer'
         ];
     }

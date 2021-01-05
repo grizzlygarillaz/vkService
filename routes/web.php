@@ -4,6 +4,7 @@
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Requests\PostRequest;
 
 /*
@@ -23,4 +24,8 @@ Route::get('/', function () {
 
 Route::get('/post', [PostController::class, 'addPost']);
 
+Route::get('/projects', [ProjectController::class, 'index']);
+Route::get('/projects/info', [ProjectController::class, 'info']);
+
 Route::post('/post', [PostController::class, 'sendPost']);
+

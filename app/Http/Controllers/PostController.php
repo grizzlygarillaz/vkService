@@ -4,34 +4,53 @@ namespace App\Http\Controllers;
 
 use App\Models\Ads;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use phpDocumentor\Reflection\Types\This;
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
 use App\Models\Project;
+use App\Models\Tag;
+use App\Models\Promo;
 use App\Models\Photo;
 use RealRashid\SweetAlert\Facades\Alert;
+use Symfony\Component\Console\Helper\Table;
+use \Statickidz\GoogleTranslate;
 
 class PostController extends Controller
 {
-    private $tags;
     private $token;
-    private $project;
     private $photo;
 
     public function __construct()
     {
         $this->photo = new Photo();
         $this->token = new Post();
-        $this->project = new Project();
-        $this->tags = $this->token->getTags();
+        $tags = new Tag;
+        $trans = new GoogleTranslate();
+        foreach (Schema::getColumnListing('projects') as $property) {
+            if (Tag::where('property', '=', $property)->count() == 0 && !in_array($property, Project::all()->first()->hidden)) {
+                $tag = '::' . strtoupper($property) . '::';
+                $tags->tag = $tag;
+                $tags->property = $property;
+                $tags->save();
+            }
+        }
+        foreach (Tag::all() as $tag) {
+            if (is_null($tag->description)) {
+                $result = '';
+                $tagText = implode(' ', explode('_', $tag->property));
+                $result .= $trans->translate('en', 'ru', $tagText) . ' ';
+                $tag->description = $result;
+                $tag->save();
+            }
+        }
     }
 
     public function send($request)
     {
         $groups = ['201495762', '201495826', '201313982'];
         $baseMessage = $request['message'];
-        $projects = $this->project->getProjects();
-        foreach ($projects as $project) {
+        foreach (Project::all() as $project) {
             $message = $this->token->replaceTags($project->id,$baseMessage);
             $group = $groups[rand(0, count($groups) - 1)];
             $this->token->sendPost($group, $message);
@@ -41,31 +60,43 @@ class PostController extends Controller
     }
 
     public function sendPromo(PostRequest $request) {
-        $groups = ['201495762', '201495826', '201313982'];
+        $count = 0;
         $baseMessage = $request->message;
         $photos = $this->photo->get($this->photo->promoAlbum($request->promo))['items'];
-        $projects = $this->project->getProjects();
-        foreach ($projects as $project) {
-            $photo = $photos[array_rand($photos)];
-            $photo = "photo{$photo['owner_id']}_{$photo['id']}";
-            $message = $this->token->replaceTags($project->id,$baseMessage);
-            $group = $groups[rand(0, count($groups) - 1)];
-            $this->token->sendDeferredPost($group, $message, $request->publishDate, [$photo]);
-            usleep(500000);
-            break;
+        foreach (Project::all() as $project) {
+            $group = $project->group_id;
+            if (! is_null($group)) {
+                $photo = $photos[array_rand($photos)];
+                $photo = "photo{$photo['owner_id']}_{$photo['id']}";
+                $message = $this->replaceTags($project->id,$baseMessage);
+                $this->token->sendDeferredPost($group, $message, $request->publishDate, [$photo]);
+                $count++;
+            }
+            usleep(100000);
         }
-        return true;
+        return $count > 0;
     }
 
     public function addPost() {
-        $tags = $this->tags;
-        $promos = $this->project->getPromos();
-        return view('posts.send', ['tags' => $tags, 'promos' => $promos, 'page' => 'ОТПРАВИТЬ ПОСТ']);
+        return view('posts.send', ['tags' => Tag::all(), 'promos' => Promo::all(), 'page' => 'ОТПРАВИТЬ ПОСТ']);
+    }
+
+    public function replaceTags($project, $message)
+    {
+        $project = Project::where('id', $project)->get()->first();
+        foreach (Tag::all() as $tag) {
+            if (strstr($message, $tag->tag) && in_array($tag->property, Schema::getColumnListing('projects')) && $project->{$tag->property} != null) {
+                $message = str_replace($tag->tag, $project->{$tag->property}, $message);
+            }
+        }
+        return $message;
     }
 
     public function sendPost(PostRequest $request) {
-        $this->sendPromo($request);
-        Alert::toast('Пост успешно отправлен', 'success');
+        $this->sendPromo($request) ?
+            Alert::toast('Пост успешно отправлен', 'success')
+            :
+            Alert::toast('Что-то пошло не так', 'error');
         return back();
     }
 }

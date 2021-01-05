@@ -10,40 +10,27 @@
                     </a>
                 </li>
                 <li><a href="/">Главная страница</a></li>
+                <li><a href="/projects">Проекты</a></li>
                 <li class="accordion accordion-flush" style="background-color: rgb(58,56,73)" id="accordionPost">
                     <div class="accordion-item">
                         <a class="accordion-button collapsed" data-bs-toggle="collapse"
                            data-bs-target="#flush-collapseOne" aria-expanded="false"
                            aria-controls="flush-collapseOne">
-                            Управление постами
+                            Посты
                         </a>
                         <div id="flush-collapseOne" style="background-color: rgb(51, 49, 64)"
                              class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
                              data-bs-parent="#accordionPost">
-                            <a href="/post" id="collapse2" class="collapse show ps-3" aria-labelledby="headingOne"
+                            <a href="/post" id="collapse1" class="collapse show ps-3" aria-labelledby="headingOne"
                                data-parent="#accordionExample">Отправить пост</a>
+                            <a href="/post" id="collapse2" class="collapse show ps-3" aria-labelledby="headingOne"
+                               data-parent="#accordionExample">Отложенные посты</a>
                             <a href="/post/tags" id="collapse3" class="collapse show ps-3" aria-labelledby="headingOne"
                                data-parent="#accordionExample">Настройка тегов</a>
                         </div>
                     </div>
                 </li>
-                <li class="accordion accordion-flush" style="background-color: rgb(58,56,73)" id="accordionPromo">
-                    <div class="accordion-item">
-                        <a class="accordion-button collapsed" data-bs-toggle="collapse"
-                           data-bs-target="#flush-collapseTwo" aria-expanded="false"
-                           aria-controls="flush-collapseTwo">
-                            Управление промо-акциями
-                        </a>
-                        <div id="flush-collapseTwo" style="background-color: rgb(51, 49, 64)"
-                             class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
-                             data-bs-parent="#accordionPromo">
-                            <a href="/promo/projects" id="collapse1" class="collapse show ps-3" aria-labelledby="headingOne"
-                               data-parent="#accordionExample">Акции проектов</a>
-                            <a href="/promo" id="collapse2" class="collapse show ps-3" aria-labelledby="headingOne"
-                               data-parent="#accordionExample">Список акций</a>
-                        </div>
-                    </div>
-                </li>
+                <li><a href="/promo">Промо-акции</a></li>
             </ul>
         </div>
         <!-- /#sidebar-wrapper -->
@@ -53,7 +40,8 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12 p-0">
-                        <div class="header d-flex justify-content-sm-start justify-content-between align-items-center">
+                        <div
+                            class="header mb-1 d-flex py-1 justify-content-sm-start justify-content-between align-items-center">
                             <a href="#menu-toggle" id="menu-toggle">
                                 <div class="wrapper-menu">
                                     <div class="line-menu half start"></div>
@@ -64,9 +52,7 @@
                             <p class="page">{{ $page }}</p>
                         </div>
                         <div class="content-background">
-                            <div class="content" style="">
-                                @yield('content')
-                            </div>
+                        @yield('content')
                         </div>
                     </div>
                 </div>
@@ -81,5 +67,23 @@
             $("#wrapper").toggleClass("toggled");
             $('.wrapper-menu').toggleClass('open');
         });
+
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-top-center",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "3000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
     </script>
 @endsection

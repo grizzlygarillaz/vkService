@@ -66,20 +66,4 @@ class Post extends Vk
         return $this->apiResult('post', $request);
     }
 
-    public function getTags()
-    {
-        return DB::table('tags')->get();
-    }
-
-    public function replaceTags($project, $message)
-    {
-        $project = DB::table('projects')->where('id', '=', $project)->get()->first();
-        $tags = $this->getTags();
-        foreach ($tags as $tag) {
-            if (strstr($message, $tag->tag) && property_exists($project, $tag->property) && $project->{$tag->property} != null) {
-                $message = str_replace($tag->tag, $project->{$tag->property}, $message);
-            }
-        }
-        return $message;
-    }
 }
