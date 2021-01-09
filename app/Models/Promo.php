@@ -9,4 +9,8 @@ class Promo extends Model
 {
     use HasFactory;
     protected $table = 'promo';
+
+    public function projects() {
+        return $this->belongsToMany('Project');
+    }
 }

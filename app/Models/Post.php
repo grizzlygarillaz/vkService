@@ -32,14 +32,16 @@ class Post extends Vk
             "publish_date" => $dateTime
         ];
 
-        foreach ($photoIds as $key => $id) {
-            $media .= $id;
-            if (array_key_exists($key + 1, $photoIds)) {
-                $media .= ',';
+        if (!empty($photoIds)){
+            foreach ($photoIds as $key => $id) {
+                $media .= $id;
+                if (array_key_exists($key + 1, $photoIds)) {
+                    $media .= ',';
+                }
             }
-        }
-        if ($media != '') {
-            $request += ['attachments' => $media];
+            if ($media != '') {
+                $request += ['attachments' => $media];
+            }
         }
         return $this->apiResult('post', $request);
     }

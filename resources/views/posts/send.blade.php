@@ -1,13 +1,6 @@
 @extends('layout.sidenav')
 @section('content')
     <div class="content" style="">
-        @if($errors->any())
-            <div class="alert alert-danger">
-                @foreach($errors->all() as $error)
-                    <p>{{ $error }}</p>
-                @endforeach
-            </div>
-        @endif
         <div class="post-form">
             @csrf
             <div class="input-group mb-3">
@@ -19,11 +12,10 @@
                     @endforeach
                 </select>
             </div>
-            <div class="input-group mb-3">
-                <label for="publishDate" class="input-group-text" id="basic-addon1">Дата</label>
-                <input type="text" id="publishDate" name="publishDate" class="datepicker-here form-control bg-white"
-                       placeholder="Выберите дату публикации..." autocomplete="off" data-timepicker="true">
-            </div>
+            @include('layout.datepicker', [
+                'pickerId' => 'publishDate',
+                'pickerName' => 'Дата',
+                'pickerPlaceholder' => 'Введите дату публикации'])
             <div class="card">
                 <div class="card-header">
                     Шаблон поста
@@ -33,22 +25,7 @@
                                   aria-label="With textarea" id="message" placeholder="Введите текст..."></textarea>
                 </div>
                 <div class="card-footer">
-                    <p class="text-muted m-0 mb-1">Теги автозамены:</p>
-                    <div class="container p-0 m-0">
-                        <div class="row row-cols-1 row-cols-md-auto">
-                            @if(isset($tags))
-                                @foreach($tags as $tag)
-                                    <div class="col m-1 tags input-group d-flex" style="width: auto !important;"
-                                         data="{{ $tag->tag}}">
-                                        <button type="button"
-                                                class="btn btn-sm btn-secondary p-1">{{ $tag->tag}}</button>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary"
-                                                style="font-weight: 400; font-family: 'Roboto', sans-serif">{{ $tag->description }}</button>
-                                    </div>
-                                @endforeach
-                            @endif
-                        </div>
-                    </div>
+                    @include('layout.tags', ['textarea' => 'message'])
                 </div>
             </div>
             <div class="d-flex justify-content-end mt-3">
@@ -62,39 +39,6 @@
     <script>
 
         $(document).ready(function () {
-            $.fn.extend({
-                insertAtCaret: function (myValue) {
-                    return this.each(function (i) {
-                        if (document.selection) {
-                            //For browsers like Internet Explorer
-                            this.focus();
-                            sel = document.selection.createRange();
-                            sel.text = myValue;
-                            this.focus();
-                        } else if (this.selectionStart || this.selectionStart == '0') {
-                            //For browsers like Firefox and Webkit based
-                            var startPos = this.selectionStart;
-                            var endPos = this.selectionEnd;
-                            var scrollTop = this.scrollTop;
-                            this.value = this.value.substring(0, startPos) + myValue + this.value.substring(endPos, this.value.length);
-                            this.focus();
-                            this.selectionStart = startPos + myValue.length;
-                            this.selectionEnd = startPos + myValue.length;
-                            this.scrollTop = scrollTop;
-                        } else {
-                            this.value += myValue;
-                            this.focus();
-                        }
-                    })
-                }
-            });
-
-            $(document).on('click', '.tags', function () {
-                // let textarea = $('[name = "message"]').val()
-                // $('[name = "message"]').val(textarea + $(this).attr('data'))
-                $('[name = "message"]').insertAtCaret($(this).attr('data'));
-            })
-
             $('textarea.form-control').on('input', function (e) {
                 this.style.height = '200px';
                 this.style.height = (this.scrollHeight + 6) + 'px';
@@ -133,13 +77,6 @@
                 })
             })
 
-            $('#publishDate').datepicker({
-                minDate: new Date(),
-                minHours: new Date('H'),
-                minMinutes: new Date('i')
-            })
-
-            $('#publishDate').inputmask("99.99.9999 99:99");
         })
     </script>
 @endsection

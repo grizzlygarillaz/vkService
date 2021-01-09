@@ -18,7 +18,7 @@
                            aria-controls="flush-collapseOne">
                             Посты
                         </a>
-                        <div id="flush-collapseOne" style="background-color: rgb(51, 49, 64)"
+                        <div id="flush-collapseOne" style="background-color: rgb(47,44,59)"
                              class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
                              data-bs-parent="#accordionPost">
                             <a href="/post" id="collapse1" class="collapse show ps-3" aria-labelledby="headingOne"

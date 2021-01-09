@@ -22,4 +22,8 @@ class ProjectController extends Controller
         $info .= $this->makeInput('Телефон', 'phone', $project->phone);
         return response()->json(['about' => $info]);
     }
+
+    public function addPromo (Request $request) {
+        $promo = DB::table('promo_project')->insert(['project_id' => $request->project, 'promo_id' => $request->promo]);
+    }
 }

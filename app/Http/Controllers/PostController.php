@@ -62,14 +62,15 @@ class PostController extends Controller
     public function sendPromo(PostRequest $request) {
         $count = 0;
         $baseMessage = $request->message;
-        $photos = $this->photo->get($this->photo->promoAlbum($request->promo))['items'];
+//        $photos = $this->photo->get($this->photo->promoAlbum($request->promo))['items'];
         foreach (Project::all() as $project) {
             $group = $project->group_id;
             if (! is_null($group)) {
-                $photo = $photos[array_rand($photos)];
-                $photo = "photo{$photo['owner_id']}_{$photo['id']}";
-                $message = $this->replaceTags($project->id,$baseMessage);
-                $this->token->sendDeferredPost($group, $message, $request->publishDate, [$photo]);
+//                $photo = $photos[array_rand($photos)];
+//                $photo = "photo{$photo['owner_id']}_{$photo['id']}";
+//                $message = $this->replaceTags($project->id,$baseMessage);
+                $message = '<head>  <meta property="vk:image" content="https://sun9-17.userapi.com/impf/c540106/v540106693/cfd3/-6hDUYsgLmo.jpg?size=604x444&quality=96&sign=4fb7a3260365ba0d563a5c3166ac6275&type=album"/> </head>';
+                $this->token->sendDeferredPost($group, $message, $request->publishDate);
                 $count++;
             }
             usleep(100000);
