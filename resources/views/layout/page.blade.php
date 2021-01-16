@@ -21,11 +21,11 @@
     </style>
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <script src="/js/jquery-3.5.1.min.js"></script>
     <script src="js/bootstrap/bootstrap.js"></script>
     <script src="js/scrollmagic/uncompressed/ScrollMagic.js"></script>
     <script src="js/scrollmagic/minified/ScrollMagic.min.js"></script>
     <script src="js/scrollmagic/uncompressed/plugins/debug.addIndicators.js"></script>
-    <script src="/js/jquery-3.5.1.min.js"></script>
     <script src="/js/jquery.inputmask.min.js"></script>
     <script src="/js/inputmask.min.js"></script>
     <script src="/js/toastr.min.js"></script>

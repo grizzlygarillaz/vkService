@@ -1,7 +1,7 @@
 @extends('layout.sidenav')
 @section('content')
     <div class="content" style="">
-        <div class="nav nav-pills d-flex justify-content-between">
+        <div class="nav nav-pills mb-3 d-flex justify-content-between">
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addPromo">
                 Добавить акцию
             </button>
@@ -12,34 +12,32 @@
                 <label class="btn btn-outline-primary" for="archive">Архив</label>
             </div>
         </div>
+        <div class="row row-cols-1 row-cols-md-3 g-0">
         @foreach($promos as $promo)
-            @if ($loop->index % 3 == 0)
-                <div class="row">
-                    @endif
-                    <div class="card col-12 col-md m-3 p-0 promo-card" value="{{ $promo->id }}">
-                        <div class="card-img-top gradient text-bottom">
-                            <p class="front">{{ $promo->name }}</p>
-                            <img src= "{{ key_exists($promo->name, $photos) ? "/storage/{$photos[$promo->name][0]->path}" : '' }}"
-                                 class="promo-img" alt="...">
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text">
-                                {{ $promo->description }}
-                            </p>
-                        </div>
-                        <div class="card-footer d-flex justify-content-between">
-                            <button class="btn btn-secondary promo-demo">Демо</button>
-                            <button class="btn btn-secondary promo-edit">Редактировать</button>
-                        </div>
+            <div class="col">
+                <div class="card p-0 m-3 promo-card" value="{{ $promo->id }}">
+                    <div class="card-img-top gradient text-bottom">
+                        <p class="front">{{ $promo->name }}</p>
+                        <img src= "{{ key_exists($promo->name, $photos) ? "/storage/{$photos[$promo->name][0]->path}" : '' }}"
+                             class="promo-img" alt="...">
                     </div>
-                    @if ($loop->index % 3 == 2)
+                    <div class="card-body">
+                        <p class="card-text text-start promo-layout">
+                            {{ Illuminate\Support\Str::limit($promo->layout, 100, $end = '...') }}
+                        </p>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between">
+                        <button class="btn btn-secondary promo-demo">Демо</button>
+                        <button class="btn btn-secondary promo-edit">Редактировать</button>
+                    </div>
                 </div>
-            @endif
+            </div>
         @endforeach
+        </div>
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="addPromo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addPromo" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" aria-hidden="true">
         <div class="modal-dialog">
             <form class="modal-content" enctype="multipart/form-data" method="post" action="/promo">
                 @csrf
@@ -73,7 +71,6 @@
                     <div class="input-group">
                         <textarea class="form-control" aria-label="With textarea" name="promo_layout" id="promo_layout"></textarea>
                     </div>
-                    @include('layout.tags', ['textarea' => 'promo_layout'])
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>

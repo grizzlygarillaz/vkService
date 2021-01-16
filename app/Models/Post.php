@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
+use http\Env\Request;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Models\Vk;
+use App\Models\Project;
 
 class Post extends Vk
 {
     use HasFactory;
 
-    protected $methodType = 'wall';
+    public $methodType = 'wall';
 
     /**
      * @param $groupId - id группы для поста
@@ -66,6 +68,10 @@ class Post extends Vk
         }
 
         return $this->apiResult('post', $request);
+    }
+
+    public function projects() {
+        return $this->belongsToMany(Project::class);
     }
 
 }

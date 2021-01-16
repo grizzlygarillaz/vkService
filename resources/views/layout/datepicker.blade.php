@@ -1,6 +1,6 @@
 <div class="input-group mb-3">
     <label for="{{ $pickerId }}" class="input-group-text">{{ $pickerName }}</label>
-    <input type="text" id="{{ $pickerId }}" name="{{ $pickerId }}" class="datepicker-here form-control bg-white"
+    <input type="text" id="{{ $pickerId }}" name="{{ $pickerId }}" {{ isset($property) ? $property : '' }} class="datepicker-here form-control bg-white"
            placeholder="{{ $pickerPlaceholder }}..." style="z-index: 1051" autocomplete="off" data-timepicker="true">
 </div>
 

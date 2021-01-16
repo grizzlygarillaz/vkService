@@ -11,6 +11,7 @@
                 </li>
                 <li><a href="/">Главная страница</a></li>
                 <li><a href="/projects">Проекты</a></li>
+                <li><a href="/content_plan">Контент-план</a></li>
                 <li class="accordion accordion-flush" style="background-color: rgb(58,56,73)" id="accordionPost">
                     <div class="accordion-item">
                         <a class="accordion-button collapsed" data-bs-toggle="collapse"
@@ -21,11 +22,11 @@
                         <div id="flush-collapseOne" style="background-color: rgb(47,44,59)"
                              class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
                              data-bs-parent="#accordionPost">
-                            <a href="/post" id="collapse1" class="collapse show ps-3" aria-labelledby="headingOne"
+                            <a href="posts" id="collapse1" class="collapse show ps-3" aria-labelledby="headingOne"
                                data-parent="#accordionExample">Отправить пост</a>
-                            <a href="/post" id="collapse2" class="collapse show ps-3" aria-labelledby="headingOne"
+                            <a href="posts" id="collapse2" class="collapse show ps-3" aria-labelledby="headingOne"
                                data-parent="#accordionExample">Отложенные посты</a>
-                            <a href="/post/tags" id="collapse3" class="collapse show ps-3" aria-labelledby="headingOne"
+                            <a href="posts/tags" id="collapse3" class="collapse show ps-3" aria-labelledby="headingOne"
                                data-parent="#accordionExample">Настройка тегов</a>
                         </div>
                     </div>
@@ -43,7 +44,7 @@
                         <div
                             class="header mb-1 d-flex py-1 justify-content-sm-start justify-content-between align-items-center">
                             <a href="#menu-toggle" id="menu-toggle">
-                                <div class="wrapper-menu">
+                                <div class="wrapper-menu" id="wrapper-menu">
                                     <div class="line-menu half start"></div>
                                     <div class="line-menu"></div>
                                     <div class="line-menu half end"></div>
@@ -52,7 +53,7 @@
                             <p class="page">{{ $page }}</p>
                         </div>
                         <div class="content-background">
-                        @yield('content')
+                            @yield('content')
                         </div>
                     </div>
                 </div>
@@ -62,28 +63,44 @@
     </div>
 
     <script>
-        $("#menu-toggle").click(function (e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
-            $('.wrapper-menu').toggleClass('open');
-        });
+        let navbar = localStorage.getItem('navbar');
 
-        toastr.options = {
-            "closeButton": false,
-            "debug": false,
-            "newestOnTop": false,
-            "progressBar": false,
-            "positionClass": "toast-top-center",
-            "preventDuplicates": false,
-            "onclick": null,
-            "showDuration": "300",
-            "hideDuration": "1000",
-            "timeOut": "3000",
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
+        if (navbar == 'open') {
+            $('*').addClass('no-transition')
+            $("#wrapper").removeClass("toggled")
+            $('.wrapper-menu').addClass('open')
         }
+
+        $(document).ready(function () {
+            $('*').removeClass('no-transition')
+            $("#menu-toggle").click(function (e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("toggled")
+                $('.wrapper-menu').toggleClass('open')
+                if ($('.wrapper-menu').hasClass('open')) {
+                    localStorage.setItem("navbar", 'open')
+                } else {
+                    localStorage.setItem("navbar", 'close')
+                }
+            })
+
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-center",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "3000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        });
     </script>
 @endsection

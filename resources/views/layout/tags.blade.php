@@ -1,4 +1,4 @@
-@if(isset($tags))
+@if(!empty($tags))
     <p class="text-muted m-0 mb-1">Теги автозамены:</p>
     <div class="container p-0 m-0">
         <div class="row row-cols-1 row-cols-md-auto">
@@ -17,8 +17,6 @@
     <script>
         $(document).ready(function () {
             $(document).on('click', '.tags', function () {
-                // let textarea = $('[name = "message"]').val()
-                // $('[name = "message"]').val(textarea + $(this).attr('data'))
                 $('#{{ $textarea }}').insertAtCaret($(this).attr('data'));
             })
         })

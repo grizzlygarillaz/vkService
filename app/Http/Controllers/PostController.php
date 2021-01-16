@@ -39,7 +39,7 @@ class PostController extends Controller
             if (is_null($tag->description)) {
                 $result = '';
                 $tagText = implode(' ', explode('_', $tag->property));
-                $result .= $trans->translate('en', 'ru', $tagText) . ' ';
+                $result .= $trans->translate('en', 'ru', ucfirst($tagText)) . ' ';
                 $tag->description = $result;
                 $tag->save();
             }
@@ -51,7 +51,7 @@ class PostController extends Controller
         $groups = ['201495762', '201495826', '201313982'];
         $baseMessage = $request['message'];
         foreach (Project::all() as $project) {
-            $message = $this->token->replaceTags($project->id,$baseMessage);
+            $message = $this->token->replaceTags($project->id, $baseMessage);
             $group = $groups[rand(0, count($groups) - 1)];
             $this->token->sendPost($group, $message);
             usleep(500000);
@@ -59,17 +59,17 @@ class PostController extends Controller
         return true;
     }
 
-    public function sendPromo(PostRequest $request) {
+    public function sendPromo(PostRequest $request)
+    {
         $count = 0;
         $baseMessage = $request->message;
-//        $photos = $this->photo->get($this->photo->promoAlbum($request->promo))['items'];
+        $photos = $this->photo->get($this->photo->promoAlbum($request->promo))['items'];
         foreach (Project::all() as $project) {
             $group = $project->group_id;
-            if (! is_null($group)) {
-//                $photo = $photos[array_rand($photos)];
-//                $photo = "photo{$photo['owner_id']}_{$photo['id']}";
-//                $message = $this->replaceTags($project->id,$baseMessage);
-                $message = '<head>  <meta property="vk:image" content="https://sun9-17.userapi.com/impf/c540106/v540106693/cfd3/-6hDUYsgLmo.jpg?size=604x444&quality=96&sign=4fb7a3260365ba0d563a5c3166ac6275&type=album"/> </head>';
+            if (!is_null($group)) {
+                $photo = $photos[array_rand($photos)];
+                $photo = "photo{$photo['owner_id']}_{$photo['id']}";
+                $message = $this->replaceTags($project->id, $baseMessage);
                 $this->token->sendDeferredPost($group, $message, $request->publishDate);
                 $count++;
             }
@@ -78,26 +78,28 @@ class PostController extends Controller
         return $count > 0;
     }
 
-    public function addPost() {
+    public function sendGroupPost ($project, $post, $photo) {
+        $post_obj = new Post;
+        $post = Post::find($post);
+        $message = $post->text;
+        $date = $post->publishDate;
+        $project = Project::find($project);
+        $photo
+        $post_obj->sendDeferredPost($project->group_id, $post->text, $date = $post->publishDate);
+    }
+
+    public function addPost()
+    {
         return view('posts.send', ['tags' => Tag::all(), 'promos' => Promo::all(), 'page' => 'ОТПРАВИТЬ ПОСТ']);
     }
 
-    public function replaceTags($project, $message)
+    public function sendPost(PostRequest $request)
     {
-        $project = Project::where('id', $project)->get()->first();
-        foreach (Tag::all() as $tag) {
-            if (strstr($message, $tag->tag) && in_array($tag->property, Schema::getColumnListing('projects')) && $project->{$tag->property} != null) {
-                $message = str_replace($tag->tag, $project->{$tag->property}, $message);
-            }
-        }
-        return $message;
-    }
-
-    public function sendPost(PostRequest $request) {
         $this->sendPromo($request) ?
             Alert::toast('Пост успешно отправлен', 'success')
             :
             Alert::toast('Что-то пошло не так', 'error');
         return back();
     }
+
 }

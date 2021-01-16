@@ -19,7 +19,7 @@ class Photo extends Vk
     use HasFactory;
     use UploadTrait;
 
-    protected $methodType = 'photos';
+    public $methodType = 'photos';
 
     public function getWallServer($group)
     {
@@ -84,15 +84,19 @@ class Photo extends Vk
         $count = 1;
         foreach ($photos as $photo) {
             $photoLink = $this->upload($photo, $promo);
-            $photoUrl = Storage::path("public/$photoLink");
-            $photosId += [DB::table('photo')->insertGetId(['path' => $photoLink])];
+            $photosId[] = DB::table('photo')->insertGetId(['path' => $photoLink]);
+            usleep(50000);
             $type = last(explode('/', $photo->getClientMimeType()));
-            $photosList += ["file$count" => curl_file_create($photoUrl, $photo->getClientMimeType(), "file{$count}name.$type")];
+            $photosList += ["file$count" => curl_file_create(Storage::path("public/$photoLink"), $photo->getClientMimeType(), "file{$count}name.$type")];
             if ($count == 5) {
                 break;
             }
             $count++;
         }
+
+        /**
+         * Do refactor
+         */
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: multipart/form-data",
@@ -120,9 +124,19 @@ class Photo extends Vk
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $responseParam);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = json_decode(curl_exec($ch));
+        $response = json_decode(curl_exec($ch))->response;
         curl_close($ch);
+        foreach ($photosId as $key => $item) {
+            DB::table('photo')
+                ->where('id', $item)
+                ->update([
+                    'vk_id' => $response[$key]->id,
+                    'album' => $response[$key]->album_id,
+                    'owner' => $response[$key]->owner_id
+                ]);
+            usleep(5000);
+        }
 
-        return ['save_response' => $response, 'photoIds' => $photosId];
+        return ['photoIds' => $photosId];
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePromosProjectTable extends Migration
+class CreatePostProjectTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreatePromosProjectTable extends Migration
      */
     public function up()
     {
-        Schema::create('promo_project', function (Blueprint $table) {
-            $table->integer('promo_id');
-            $table->foreign('promo_id')
+        Schema::create('post_project', function (Blueprint $table) {
+            $table->bigInteger('post_id')->unsigned();
+            $table->foreign('post_id')
                 ->references('id')
-                ->on('promo')->onDelete('cascade');
+                ->on('posts')->onDelete('cascade');
             $table->integer('project_id');
             $table->foreign('project_id')
                 ->references('id')
-                ->on('project')->onDelete('cascade');
+                ->on('projects')->onDelete('cascade');
         });
     }
 
@@ -32,6 +32,6 @@ class CreatePromosProjectTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('promos_project');
+        Schema::dropIfExists('post_project');
     }
 }
