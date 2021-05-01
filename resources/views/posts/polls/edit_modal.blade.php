@@ -40,7 +40,7 @@
                 <div class="btn-group mb-3" role="group" aria-label="Basic radio toggle button group">
                     @foreach(\Illuminate\Support\Facades\DB::table('poll_backgrounds')->get() as $pollBG)
                         <input type="radio"
-                               {{$pollBG->id == $pollJSON['background'] ? 'checked' : ''}} class="btn-check poll-edit-bg"
+                               {{key_exists('background', $pollJSON) ? ($pollBG->id == $pollJSON['background'] ? 'checked' : '') : ''}} class="btn-check poll-edit-bg"
                                name="background_poll" id="poll-edit-bg{{$pollBG->id}}"
                                autocomplete="off" value="{{$pollBG->id}}">
                         <label class="btn btn-outline-secondary px-1 pt-1" for="poll-edit-bg{{$pollBG->id}}"
@@ -58,10 +58,10 @@
                              class="border rounded d-flex h-100 bg-light text-dark"></img>
                     </label>
                 </div>
-                <div class="input-group mb-3" style="display: none;">
+                <div class="input-group mb-3" {{key_exists('background', $pollJSON) ? '' : 'style="display: none;"'}}>
                     <label class="input-group-text" id="default-image">Изображение</label>
-                    <input type="text" disabled class="form-control" id="default_edit_image"
-                           placeholder="Ссылка на изображение" name="image"
+                    <input type="text" {{key_exists('background', $pollJSON) ? 'disabled' : ''}} class="form-control" id="default_edit_image"
+                           placeholder="Ссылка на изображение" name="image" value="{{$pollImage}}"
                            aria-label="Вставьте ссылку на изображение" aria-describedby="default-image">
                 </div>
                 <div class="input-group mb-3">

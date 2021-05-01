@@ -197,7 +197,7 @@ class ContentPlanController extends Controller
         }
         $answer = json_encode($request->answer);
         $anonym = $request->anonymous ? 1 : 0;
-        $poll = '{"answer":' . $answer . ',"question":"' . $request->question . '","anonymous":"$anonym"'
+        $poll = '{"answer":' . $answer . ',"question":"' . $request->question . '","anonymous":' . $anonym
             . (isset($background) ? ",$background" : '') . '}';
         $image = new Photo;
         if (!is_null($request->image)) {
@@ -351,7 +351,7 @@ class ContentPlanController extends Controller
             }
             $answer = json_encode($request->answer);
             $anonym = $request->anonymous ? 1 : 0;
-            $poll = '{"answer":' . $answer . ',"question":"' . $request->question . '","anonymous":"$anonym"'
+            $poll = '{"answer":' . $answer . ',"question":"' . $request->question . '","anonymous":' . $anonym
                 . (isset($background) ? ",$background" : '') . '}';
             $image = new Photo;
             if (!is_null($request->image)) {

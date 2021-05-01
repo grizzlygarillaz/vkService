@@ -130,7 +130,7 @@ class PostController extends Controller
             'disable_unvote' => 1,
             'question' => $poll['question'],
             'add_answers' => json_encode($poll['answer']),
-            'is_anonymous' => (int)$poll['anonymous'],
+            'is_anonymous' => $poll['anonymous'],
         ];
         if ($post->image) {
             $image = Photo::find($post->image)->path;

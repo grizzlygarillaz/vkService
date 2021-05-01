@@ -104,6 +104,9 @@ class Controller extends BaseController
                                 }
                             }
                         }
+                        if (preg_match('/price/', $tag->field)) {
+                            $replace .= '₽';
+                        }
                         $message = str_replace("::{$tag->tag}::", $replace, $message);
                     }
                 }

@@ -316,7 +316,7 @@ class Photo extends Vk
     }
 
     public function getPollPhoto ($groupId, $image) {
-        $pollServer = $this->customRequest('polls', 'getPhotoUploadServer', ['group_id' => $groupId])['upload_url'];
+        $pollServer = $this->customRequest('polls', 'getPhotoUploadServer', ['owner_id' => -$groupId])['upload_url'];
         $path_parts = pathinfo($image);
         $type = $path_parts['extension'];
         $photo = ["photo" => curl_file_create(Storage::path($image), $type, $path_parts['basename'])];
