@@ -166,7 +166,7 @@ class ProjectController extends Controller
             $photo = Photo::find($post->image);
             if ($photo) {
                 $photo = $photo->path;
-                if (preg_match('/^video/', mime_content_type($photo))) {
+                if (file_exists($photo) && reg_match('/^video/', mime_content_type($photo))) {
                     $preview = Photo::find($post->image)->preview;
                     if ($preview) {
                         $photo = $preview;

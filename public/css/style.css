@@ -15,6 +15,65 @@
     }
 }
 
+#button-to-top {
+    display: inline-block;
+    background-color: #dbdbdb;
+    color: #868686;
+    border: solid 1px #ababab;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    border-radius: 100%;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    transition: background-color .3s,
+    opacity .5s, visibility .5s;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1000;
+}
+#button-to-top::after {
+    font-family: FontAwesome;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 2em;
+    line-height: 50px;
+    color: #ababab;
+}
+#button-to-top:hover {
+    cursor: pointer;
+    background-color: #333;
+    color: #e9ecef;
+}
+#button-to-top:active {
+    background-color: #555;
+}
+#button-to-top.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Styles for the content section */
+
+@media (min-width: 500px) {
+    .content {
+        width: 43%;
+    }
+    #button-to-top {
+        margin: 30px;
+    }
+}
+.content h1 {
+    margin-bottom: -10px;
+    color: #03a9f4;
+    line-height: 1.5;
+}
+.content h3 {
+    font-style: italic;
+    color: #96a2a7;
+}
+
 .dot {
     height: 10px;
     width: 10px;
