@@ -436,7 +436,7 @@ class ContentPlanController extends Controller
     public function deletePost(Request $request, $post)
     {
         $image = new Photo;
-        Log::info('Deleted post by : ' . Auth::user()->id, \DB::table('content_plan_post')->find($post));
+        Log::info('Deleted post by : ' . Auth::user()->id . " ----> " . \DB::table('content_plan_post')->find($post)->id );
         $removeImage = \DB::table('content_plan_post')->find($post)->image;
         if (!empty($removeImage)) {
             $image->deletePhoto($removeImage);
