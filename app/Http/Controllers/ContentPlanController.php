@@ -45,7 +45,7 @@ class ContentPlanController extends Controller
         foreach (\DB::table('content_plan_post')->where('content_plan', $cp)->orderBy('publish_date', 'desc')->get() as $post) {
             $photo = null;
             $image = empty($post->image) ? null : (Photo::find($post->image) ? Photo::find($post->image)->path : null);
-            if (!empty($image) && file_exists($image) && preg_match('/^video/', mime_content_type($image))) {
+            if (!empty($image) && preg_match('/^video/', mime_content_type($image))) {
                 $preview = Photo::find($post->image)->preview;
                 if ($preview) {
                     $photo = $preview;
@@ -71,7 +71,7 @@ class ContentPlanController extends Controller
         foreach (\DB::table('content_plan_stories')->where('content_plan', $cp)->orderBy('publish_date', 'desc')->get() as $story) {
             $photo = null;
             $image = empty($story->content) ? null : (Photo::find($story->content) ? Photo::find($story->content)->path : null);
-            if (!empty($image) && file_exists($image) && preg_match('/^video/', mime_content_type($image))) {
+            if (!empty($image) && preg_match('/^video/', mime_content_type($image))) {
                 $preview = Photo::find($story->content)->preview;
                 if ($preview) {
                     $photo = $preview;
@@ -436,7 +436,7 @@ class ContentPlanController extends Controller
     public function deletePost(Request $request, $post)
     {
         $image = new Photo;
-        Log::info('Deleted post by : ' . Auth::user()->id, \DB::table('content_plan_post')->find($post));
+        Log::info('Deleted post by : ' . Auth::user()->id . " ----> " . \DB::table('content_plan_post')->find($post)->id );
         $removeImage = \DB::table('content_plan_post')->find($post)->image;
         if (!empty($removeImage)) {
             $image->deletePhoto($removeImage);
