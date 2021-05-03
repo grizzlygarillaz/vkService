@@ -38,7 +38,10 @@ class ProjectController extends Controller
         if (Auth::user()->role != 'admin') {
             $projectList = collect();
             foreach (\DB::table('employee_project')->where('employee', Auth::user()->getAuthIdentifier())->get() as $project) {
-                $projectList->push(Project::find($project->project));
+                $projectCheck = Project::find($project->project);
+                if ($projectCheck) {
+                    $projectList->push($projectCheck);
+                }
             }
         } else {
             $projectList = Project::all();
