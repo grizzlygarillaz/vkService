@@ -59,6 +59,9 @@
                             <p class="page">{{ $page }}</p>
                         </div>
                         <div class="content-background">
+                            <a id="button-to-top" class="material-icons" style="font-size: xxx-large">
+                                keyboard_arrow_up
+                            </a>
                             @yield('content')
                         </div>
                     </div>
