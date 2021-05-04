@@ -38,7 +38,10 @@ class ProjectController extends Controller
         if (Auth::user()->role != 'admin') {
             $projectList = collect();
             foreach (\DB::table('employee_project')->where('employee', Auth::user()->getAuthIdentifier())->get() as $project) {
-                $projectList->push(Project::find($project->project));
+                $projectCheck = Project::find($project->project);
+                if ($projectCheck) {
+                    $projectList->push($projectCheck);
+                }
             }
         } else {
             $projectList = Project::all();
@@ -166,7 +169,7 @@ class ProjectController extends Controller
             $photo = Photo::find($post->image);
             if ($photo) {
                 $photo = $photo->path;
-                if (file_exists($photo) && reg_match('/^video/', mime_content_type($photo))) {
+                if (file_exists($photo) && preg_match('/^video/', mime_content_type($photo))) {
                     $preview = Photo::find($post->image)->preview;
                     if ($preview) {
                         $photo = $preview;
