@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="103f7f45-6800-4b0f-9bf9-18137483506e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -211,7 +212,10 @@
       <workItem from="1619937693121" duration="906000" />
       <workItem from="1619948951764" duration="13980000" />
       <workItem from="1620031929153" duration="599000" />
-      <workItem from="1620056340184" duration="2472000" />
+      <workItem from="1620056340184" duration="3224000" />
+      <workItem from="1620076730256" duration="791000" />
+      <workItem from="1620077720705" duration="48000" />
+      <workItem from="1620105343347" duration="56000" />
     </task>
     <servers />
   </component>
@@ -219,25 +223,9 @@
     <option name="version" value="2" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="552" y="178" key="#Deployment" timestamp="1609064947639">
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1620065893948">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="178" key="#Deployment/0.0.1920.1040@0.0.1920.1040" timestamp="1609064947639" />
-    <state x="536" y="165" key="#SSH_Configurations" timestamp="1609064945450">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="536" y="165" key="#SSH_Configurations/0.0.1920.1040@0.0.1920.1040" timestamp="1609064945450" />
-    <state x="710" y="322" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1608997997790">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="710" y="322" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1608997997790" />
-    <state x="790" y="243" key="NewPhpClassDialog" timestamp="1609066054699">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="790" y="243" key="NewPhpClassDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1609066054699" />
-    <state x="92" y="92" width="1736" height="856" key="dock-window-1" timestamp="1609065833789">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="92" y="92" width="1736" height="856" key="dock-window-1/0.0.1920.1040@0.0.1920.1040" timestamp="1609065833789" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1620065893948" />
   </component>
 </project>
