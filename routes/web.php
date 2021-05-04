@@ -101,9 +101,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/content_plan/add_poll', [ContentPlanController::class, 'addPoll']);
     Route::post('/content_plan/add_story', [ContentPlanController::class, 'addStory']);
     Route::post('/project/add_story', [ContentPlanController::class, 'addStory']);
+    Route::get('/settings/tags', [SettingController::class, 'tagIndex']);
 
     Route::group(['middleware' => ['admin']], function () {
-        Route::get('/settings/tags', [SettingController::class, 'tagIndex']);
         Route::get('/settings/tags/object/{object}', [SettingController::class, 'objectTags']);
         Route::post('/settings/tags/update/object/{object}', [SettingController::class, 'updateTags']);
         Route::get('/employees', [UserController::class, 'get']);
