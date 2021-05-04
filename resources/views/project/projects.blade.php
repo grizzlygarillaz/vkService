@@ -116,10 +116,7 @@
                 })
             })
 
-            let currentProject = localStorage.getItem('currentProject') ?
-                localStorage.getItem('currentProject')
-                :
-                $('#project-list .btn-check').first().attr('id')
+            let currentProject = localStorage.getItem('currentProject') ?? $('#project-list .btn-check').first().attr('id')
             $('.project[for=' + currentProject + ']').click()
         })
     </script>

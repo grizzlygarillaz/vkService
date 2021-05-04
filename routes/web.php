@@ -101,8 +101,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/content_plan/add_poll', [ContentPlanController::class, 'addPoll']);
     Route::post('/content_plan/add_story', [ContentPlanController::class, 'addStory']);
     Route::post('/project/add_story', [ContentPlanController::class, 'addStory']);
+
     Route::get('/settings/tags', [SettingController::class, 'tagIndex']);
     Route::get('/settings/tags/object/{object}', [SettingController::class, 'objectTags']);
+    Route::get('/settings/dish_type', [SettingController::class, 'dishTypeIndex']);
+    Route::post('/settings/dish_type/add', [SettingController::class, 'addDishType']);
 
     Route::group(['middleware' => ['admin']], function () {
         Route::post('/settings/tags/update/object/{object}', [SettingController::class, 'updateTags']);

@@ -56,7 +56,7 @@
                                     <div class="line-menu half end"></div>
                                 </div>
                             </a>
-                            <p class="page">{{ $page }}</p>
+                            <p class="page">{{ $page ?? ''}}</p>
                         </div>
                         <div class="content-background">
                             <a id="button-to-top" class="material-icons" style="font-size: xxx-large">

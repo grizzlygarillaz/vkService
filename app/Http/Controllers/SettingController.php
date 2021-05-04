@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DishType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 
@@ -67,5 +68,35 @@ class SettingController extends Controller
         }
 
         return $this->objectTags($object);
+    }
+
+    public function dishTypeIndex(Request $request)
+    {
+
+        $data = [
+            'dish_type_names' => DishType::select('name')->orderBy('name')->get()
+        ];
+        $dishTypes = [];
+        foreach ($data['dish_type_names'] as $name) {
+            $dishTypes[$name->name] = DishType::where('name', $name->name)->get();
+        }
+        $data += ['data' => $dishTypes];
+        if ($request->ajax()) {
+            return view('settings.dishType.list', $data)->render();
+        }
+        return view('settings.dishType.index', $data);
+    }
+
+    public function addDishType(Request $request)
+    {
+        $request->validate([
+            'dish_type' => 'required|unique:App\Models\DishType,name'
+        ]);
+
+        $dishType = new DishType;
+        $dishType->name = $request->dish_type;
+        $dishType->save();
+
+        return $this->dishTypeIndex($request);
     }
 }
