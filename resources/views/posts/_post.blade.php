@@ -75,6 +75,7 @@
 <div class="cp-post-edit-modal">
     <div class="modal fade" id="edit-poll" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
          aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    </div>
 </div>
 
 <script>

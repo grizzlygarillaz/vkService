@@ -11,24 +11,3 @@
         @endif
     </select>
 </div>
-
-<script>
-    $('.select-object').change(function () {
-        let data = {}
-        data['object'] = $('option:selected', this).val()
-        data['post'] = $(this).closest('.cp-card').attr('id')
-        data['type'] = $(this).attr('name')
-        let id = $('.project-header').attr('project')
-        $.ajax({
-            url: '/projects/post/selectType/' + id,
-            data: data,
-            error: function (msg) {
-                console.log(msg)
-            },
-            success: function (data) {
-                console.log(data)
-                $('.project-page input:checked').click()
-            }
-        })
-    })
-</script>

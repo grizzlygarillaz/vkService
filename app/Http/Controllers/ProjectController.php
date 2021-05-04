@@ -167,9 +167,9 @@ class ProjectController extends Controller
             $error = $this->checkError($message, $project, $post);
 
             $photo = Photo::find($post->image);
-            if ($photo) {
+            if ($photo && file_exists($photo->path)) {
                 $photo = $photo->path;
-                if (file_exists($photo) && preg_match('/^video/', mime_content_type($photo))) {
+                if (preg_match('/^video/', mime_content_type($photo))) {
                     $preview = Photo::find($post->image)->preview;
                     if ($preview) {
                         $photo = $preview;
@@ -249,7 +249,7 @@ class ProjectController extends Controller
             return false;
         }
         $columns = Schema::getColumnListing($request->type);
-        $images = preg_grep('/^image_/', Schema::getColumnListing($request->type));
+        $images = preg_grep('/^image_img/', Schema::getColumnListing($request->type));
         $object = \DB::table($request->type)->find($request->object);
         if ($object) {
             $post = Post::find($request->post);
