@@ -97,9 +97,6 @@ class SettingController extends Controller
         if (in_array($request->dish_type, ['all', 'other'])) {
             throw new \Exception('Зарезервированное имя категории');
         }
-        if (empty(trim($request->dish_type, ' '))) {
-            return false;
-        }
         $dishType = new DishType;
         $dishType->name = $request->dish_type;
         $dishType->save();
@@ -117,8 +114,8 @@ class SettingController extends Controller
             throw new \Exception('Категория не найдена');
         }
 
-        if (empty($request->filter)) {
-            return true;
+        if (empty(trim($request->filter, ' '))) {
+            return false;
         }
         DishType::where('name', $request->category)->delete();
 
@@ -133,5 +130,11 @@ class SettingController extends Controller
             $dishType->filter = $filter;
             $dishType->save();
         }
+    }
+
+    public function deleteFilter ($filter, Request $request)
+    {
+        DishType::where('name', $filter)->delete();
+        return $this->dishTypeIndex($request);
     }
 }

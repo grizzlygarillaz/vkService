@@ -116,6 +116,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/settings/dish_type', [SettingController::class, 'dishTypeIndex']);
         Route::post('/settings/dish_type/add', [SettingController::class, 'addDishType']);
         Route::post('/settings/dish_type/set_filter', [SettingController::class, 'setFilter']);
+        Route::get('/settings/dish_type/delete_filter/{filter}', [SettingController::class, 'deleteFilter']);
     });
 
 

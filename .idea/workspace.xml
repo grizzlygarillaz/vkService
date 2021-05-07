@@ -20,18 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="103f7f45-6800-4b0f-9bf9-18137483506e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/resources/views/posts/dish_category.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/posts/object_select.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ContentPlanController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ContentPlanController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ObjectController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ObjectController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ProjectController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ProjectController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/SettingController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/SettingController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_05_04_090437_create_setting_dish_type_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_05_04_090437_create_setting_dish_type_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layout/page.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout/page.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layout/sidenav.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout/sidenav.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/project/posts.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/project/posts.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/settings/dishType/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/settings/dishType/index.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/settings/dishType/list.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/settings/dishType/list.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
@@ -256,7 +246,7 @@
       <workItem from="1620236513016" duration="1614000" />
       <workItem from="1620284556786" duration="611000" />
       <workItem from="1620290782388" duration="6235000" />
-      <workItem from="1620376840500" duration="12539000" />
+      <workItem from="1620376840500" duration="15478000" />
     </task>
     <servers />
   </component>

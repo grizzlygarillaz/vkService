@@ -25,9 +25,9 @@
             })
         })
 
-        $('textarea.dish-filter').focusout(function () {
-            let filter = $(this).val();
-            let category = $(this).attr('id');
+        $(document).on('focusout', '.dish-filter', function () {
+            let filter = $(this).val()
+            let category = $(this).attr('id')
             $.ajax({
                 url: '/settings/dish_type/set_filter',
                 method: 'post',
@@ -35,5 +35,25 @@
             })
         })
 
+        $(document).on('click', '.delete-category', function () {
+            let category = $(this).attr('id')
+            swal({
+                title: "Вы уверены?",
+                icon: "warning",
+                buttons: ['Отмена', 'Да'],
+                dangerMode: true,
+            })
+                .then((willSend) => {
+                    if (willSend) {
+                        $.ajax({
+                            url: '/settings/dish_type/delete_filter/' + category,
+                            success: function (html) {
+                                $('.dish_type_list').html(html)
+                            }
+                        })
+                    }
+                })
+
+        })
     </script>
 @endsection
