@@ -104,8 +104,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/settings/tags', [SettingController::class, 'tagIndex']);
     Route::get('/settings/tags/object/{object}', [SettingController::class, 'objectTags']);
-    Route::get('/settings/dish_type', [SettingController::class, 'dishTypeIndex']);
-    Route::post('/settings/dish_type/add', [SettingController::class, 'addDishType']);
+    Route::get('/dish/category/{project}', [ObjectController::class, 'getCategory']);
 
     Route::group(['middleware' => ['admin']], function () {
         Route::post('/settings/tags/update/object/{object}', [SettingController::class, 'updateTags']);
@@ -114,6 +113,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/employees/projects/{employee}', [UserController::class, 'employeeProjectsSet']);
         Route::get('/import', [ProjectAuthController::class, 'index']);
         Route::post('/import/save', [ProjectAuthController::class, 'import']);
+        Route::get('/settings/dish_type', [SettingController::class, 'dishTypeIndex']);
+        Route::post('/settings/dish_type/add', [SettingController::class, 'addDishType']);
+        Route::post('/settings/dish_type/set_filter', [SettingController::class, 'setFilter']);
     });
 
 

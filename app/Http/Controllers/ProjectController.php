@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DishType;
 use App\Models\Stories;
 use http\Env\Response;
 use Illuminate\Http\File;
@@ -193,7 +194,6 @@ class ProjectController extends Controller
             if (key_exists($post->id, $errorPost)) {
                 $error[] = $errorPost[$post->id];
             }
-
             $posts[] = [
                 'error' => $error,
                 'post' => $post,
@@ -202,6 +202,7 @@ class ProjectController extends Controller
                     'Контентный'
                     :
                     $this->objectsOfProject[$post->post_type]['name'],
+                'categories' => DishType::select('name')->groupBy('name')->get(),
                 'image' => $photo,
                 'text' => $message,
                 'users' => (new Post)->getAuthorEditor($post)];

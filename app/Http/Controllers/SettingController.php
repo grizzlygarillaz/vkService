@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\DishType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
+use Mockery\Exception;
 
 class SettingController extends Controller
 {
@@ -74,7 +76,7 @@ class SettingController extends Controller
     {
 
         $data = [
-            'dish_type_names' => DishType::select('name')->orderBy('name')->get()
+            'dish_type_names' => DishType::select('name')->groupBy('name')->get()
         ];
         $dishTypes = [];
         foreach ($data['dish_type_names'] as $name) {
@@ -92,11 +94,44 @@ class SettingController extends Controller
         $request->validate([
             'dish_type' => 'required|unique:App\Models\DishType,name'
         ]);
-
+        if (in_array($request->dish_type, ['all', 'other'])) {
+            throw new \Exception('Зарезервированное имя категории');
+        }
+        if (empty(trim($request->dish_type, ' '))) {
+            return false;
+        }
         $dishType = new DishType;
         $dishType->name = $request->dish_type;
         $dishType->save();
 
         return $this->dishTypeIndex($request);
+    }
+
+    public function setFilter(Request $request)
+    {
+        $request->validate([
+            'category' => 'required'
+        ]);
+
+        if (DishType::where('name', $request->category)->get()->count() < 1) {
+            throw new \Exception('Категория не найдена');
+        }
+
+        if (empty($request->filter)) {
+            return true;
+        }
+        DishType::where('name', $request->category)->delete();
+
+        foreach (explode(',', $request->filter) as $filter) {
+            $emptyFilter = DishType::where('name', $request->category)->where('filter', null)->get()->count();
+            if ($emptyFilter > 0) {
+                DishType::where('name', $request->category)->where('filter', null)->update(['filter' => $filter]);
+                continue;
+            }
+            $dishType = new DishType;
+            $dishType->name = $request->category;
+            $dishType->filter = $filter;
+            $dishType->save();
+        }
     }
 }

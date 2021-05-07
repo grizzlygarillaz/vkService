@@ -14,7 +14,7 @@ class CreateSettingDishTypeTable extends Migration
     public function up()
     {
         Schema::create('setting_dish_type', function (Blueprint $table) {
-            $table->char('name', 55)->unique();
+            $table->char('name', 55);
             $table->char('filter', 55)->nullable();
         });
     }

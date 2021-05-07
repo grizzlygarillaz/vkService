@@ -14,8 +14,9 @@
                 <li><a href="/content_plan">Контент-план</a></li>
                 {{--                <li><a href="/promo">Промо-акции</a></li>--}}
                 @if(\Illuminate\Support\Facades\Auth::user()->role == 'admin')
-                    <li><a href="/settings/tags">Настройка тегов</a></li>
                     <li><a href="/import">Импортировать проекты</a></li>
+                    <li><a href="/settings/tags">Настройка тегов</a></li>
+                    <li><a href="/settings/dish_type">Настройка блюд</a></li>
                     <li><a href="/employees">Список сотрудников</a></li>
                     <li><a href="/register/employee">Добавить сотрудника</a></li>
                 @endif

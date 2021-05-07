@@ -1,6 +1,6 @@
 @extends('layout.sidenav')
 @section('content')
-    <div class="content">
+    <div class="content text-start">
         <div class="input-group mb-3 w-lg-50">
             <input type="text" class="form-control" name="dish_type" id="dish_type" placeholder="Введите название категории" aria-describedby="add_dish_type">
             <button class="btn btn-success" type="button" id="add_dish_type">Добавить категорию</button>
@@ -25,24 +25,15 @@
             })
         })
 
-        function handleInput() {
-            var text = $textarea.val();
-            var highlightedText = applyHighlights(text);
-            $highlights.html(highlightedText);
-        }
-        function applyHighlights(text) {
-            return text
-                .replace(/\n$/g, '\n\n')
-                .replace(/[A-Z].*?\b/g, '<mark></mark>');
-        }
-        function handleScroll() {
-            var scrollTop = $('textarea').scrollTop();
-            $('.backdrop').scrollTop(scrollTop);
-        }
+        $('textarea.dish-filter').focusout(function () {
+            let filter = $(this).val();
+            let category = $(this).attr('id');
+            $.ajax({
+                url: '/settings/dish_type/set_filter',
+                method: 'post',
+                data: {filter: filter, category: category}
+            })
+        })
 
-        $('textarea').on({
-            'input': handleInput,
-            'scroll': handleScroll
-        });
     </script>
 @endsection

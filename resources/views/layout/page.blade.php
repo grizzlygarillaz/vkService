@@ -442,6 +442,9 @@
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            error: function (msg) {
+                swal("Ошибка", msg.responseJSON.message, "error")
             }
         });
     </script>

@@ -79,16 +79,23 @@
                         </div>
                         <div class="card-footer d-flex justify-content-end p-3">
                             @if($post['post']->post_type)
-                                @include("posts.post_type", [
-                                        'objects' => isset($objects[$post['post']->post_type]) ? $objects[$post['post']->post_type] : null,
-                                        'selected' => $post['post']->object_id,
-                                        'typeName' => $post['object'],
-                                        'type' => $post['post']->post_type
-                                    ])
+                                <div class="w-100">
+                                    @if($post['post']->post_type == 'dish' && isset($post['categories']))
+                                        @include("posts.dish_category", ["categories" => $post['categories']])
+                                    @endif
+                                    <div class="object-list">
+                                        @include("posts.post_type", [
+                                                'objects' => isset($objects[$post['post']->post_type]) ? $objects[$post['post']->post_type] : null,
+                                                'selected' => $post['post']->object_id,
+                                                'typeName' => $post['object'],
+                                                'type' => $post['post']->post_type
+                                            ])
+                                    </div>
+                                </div>
                             @else
                                 <p></p>
                             @endif
-                            <div class="d-flex">
+                            <div class="d-flex align-self-end" style="height: fit-content">
                                 <div class="form-check ms-3 align-self-center">
                                     <input class="form-check-input post_to_publish" name="to_publish"
                                            {{$post['error'] ? 'disabled' : 'checked'}} type="checkbox"
@@ -316,6 +323,21 @@
             success: function (data) {
                 console.log(data)
                 $('.project-page input:checked').click()
+            }
+        })
+    })
+
+    $('.select-dish-category').change(function () {
+        let data = {}
+        data['post'] = $(this).closest('.cp-card').attr('id')
+        data['category'] = $('option:selected', this).val()
+        let list = $(this).closest('.cp-card').find('.object-list');
+        let id = $('.project-header').attr('project')
+        $.ajax({
+            url: '/dish/category/' + id,
+            data: data,
+            success: function (html) {
+                list.html(html)
             }
         })
     })
