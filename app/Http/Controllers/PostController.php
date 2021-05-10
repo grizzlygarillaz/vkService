@@ -277,6 +277,7 @@ class PostController extends Controller
     {
         Post::find($post)->delete();
     }
+
     public function sendDeferredPost(Request $request, $post)
     {
         $posts = $post == 'all' ? $request->posts : [$post];
@@ -296,14 +297,14 @@ class PostController extends Controller
             $date = date('d.m.Y H:i', strtotime("$timeZone hours", strtotime($post->publish_date)));
 
             $postClass = new Post;
+            $image = Photo::find($post->image)->path;
             try {
                 if ($post->poll) {
                     $poll = PostController::getPoll($post->id);
                     Log::info($poll);
                     $content = ["poll{$poll["owner_id"]}_{$poll['id']}"];
                     $postId = $postClass->sendDeferredPost($project->id, $message, $date, $post->mute, $content);
-                } elseif (!is_null($post->image)) {
-                    $image = Photo::find($post->image)->path;
+                } elseif (!is_null($post->image) && file_exists($image)) {
                     if (preg_match('/^video/', mime_content_type($image))) {
                         $content = (new Photo)->getVideoServer($project->id, $image);
                         $content = ["video{$content['owner_id']}_{$content['video_id']}"];
