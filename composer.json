@@ -28,7 +28,9 @@
         "rmccue/requests": "^1.7",
         "statickidz/php-google-translate-free": "^1.1",
         "umpirsky/transliterator": "^0.1.0",
-        "vkcom/vk-php-sdk": "^5.101"
+        "vkcom/vk-php-sdk": "^5.101",
+        "ext-curl": "*",
+        "ext-fileinfo": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

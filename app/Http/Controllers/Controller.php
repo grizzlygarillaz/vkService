@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Photo;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -11,6 +12,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use App\Models\Project;
 use App\Models\Tag;
@@ -193,8 +195,8 @@ class Controller extends BaseController
                         \App\Models\Photo::where('id', $value->{$column})->delete();
                     }
                 }
-                $projectObject->delete();
             }
+            $projectObject->delete();
         }
 
         if (Storage::exists("/public/storage/$project/$tableName")) {
@@ -213,12 +215,11 @@ class Controller extends BaseController
                 // Загрузка изображения из яндекса
                 if ((preg_match('/https:\/\/yadi.sk/', $value) || preg_match('/https:\/\/disk.yandex/', $value)) && $key != 'storage') {
                     $photoYandex = null;
-                    $photo = new \App\Models\Photo;
                     try {
-                        $photoYandex = $photo->downloadFromYandex($value, $project, $tableName);
+                        $photoYandex = (new Photo)->downloadFromYandex($value, $project, $tableName);
                     } catch (\Exception $e) {
                         $errors += ["Что-то не так с ссылкой на изображение : $value
-                        . {$this->objectsOfProject[$prefix]['name']} \"{$type['name']}\""];
+                        . {$this->objectsOfProject[$prefix]['name']} \"{$type['name']}\" {$e->getMessage()}"];
                     }
                     $type['image_' . $key] = ($photoYandex) ? $photoYandex['id'] : null;
                     unset($type[$key]);

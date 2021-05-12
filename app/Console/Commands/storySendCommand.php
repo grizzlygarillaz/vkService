@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Project;
 use Illuminate\Console\Command;
 use App\Models\Stories;
 
@@ -38,15 +39,8 @@ class storySendCommand extends Command
      */
     public function handle()
     {
-        $stories = \DB::table('stories')->where('publish_date', date('Y-m-d H:i', time()))->get();
-        if ($stories) {
-            foreach ($stories as $story) {
-                if ($story->to_publish && empty($story->vk_id)) {
-                    Stories::send($story->project_id, $story->id);
-                }
-                sleep(50);
-            }
+        foreach (Project::all() as $project) {
+
         }
-        return false;
     }
 }

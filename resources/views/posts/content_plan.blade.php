@@ -13,7 +13,7 @@
             <div class="add-block">
                 <button class="btn btn-outline-success me-3" id='add-post'>Добавить пост</button>
                 @include('posts.polls.polls_modal')
-{{--                <button class="btn btn-outline-success" id='add-stories'>Добавить сторис</button>--}}
+                <button class="btn btn-outline-success" id='add-stories'>Добавить сторис</button>
             </div>
             <button class="btn btn-outline-danger" id="delete-cp">Удалить КП</button>
         </div>
@@ -23,9 +23,9 @@
                    checked>
             <label class="btn btn-outline-primary" for="posts">Посты</label>
 
-{{--            <input type="radio" class="btn-check cp-page" name="cp-page" value="stories" id="stories"--}}
-{{--                   autocomplete="off">--}}
-{{--            <label class="btn btn-outline-primary" for="stories">Сторис</label>--}}
+            <input type="radio" class="btn-check cp-page" name="cp-page" value="stories" id="stories"
+                   autocomplete="off">
+            <label class="btn btn-outline-primary" for="stories">Сторис</label>
         </div>
         <hr class="text-secondary m-2">
         <div id="cp-content">
@@ -54,7 +54,7 @@
     </div>
 
     @include('posts.add_post_modal')
-{{--    @include('stories.add_modal')--}}
+    @include('stories.add_modal')
     <script>
         function checkPage () {
             console.log(localStorage.getItem('cp-page'), localStorage.getItem('cp-radio'))
@@ -74,9 +74,9 @@
             $(document).on('click', '#add-cp', function () {
                 cpModal.toggle()
             })
-            {{-- $(document).on('click', '#add-stories', function () {
+            $(document).on('click', '#add-stories', function () {
                 $('#add-cp-story').modal('show')
-            })--}}
+            })
 
             $(document).on('click', '#modal-add-cp', function () {
                 $.ajax({
@@ -137,7 +137,7 @@
                 addPostModal.show()
             })
 
-    {{-- $(document).on('click', '.story-settings', function () {
+    $(document).on('click', '.story-settings', function () {
         let id = $(this).closest('.cp-card').attr('id')
         $.ajax({
             url: '/content_plan/stories/edit/' + id,
@@ -177,7 +177,7 @@
                 }
             })
 
-    })--}}
+    })
     checkPage()
     $('.cp-radio#' + localStorage.getItem('cp-radio')).click()
     $('.cp-page#' + localStorage.getItem('cp-page')).click()

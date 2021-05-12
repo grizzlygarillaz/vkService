@@ -334,6 +334,16 @@ class PostController extends Controller
             Log::info($postId);
             if (key_exists('post_id', $postId)) {
                 \DB::table('posts')->where('id', $post->id)->update(['vk_id' => $postId['post_id']]);
+//                if ($post->post_type == 'dish') {
+//                    if (!in_array('out_queue', Schema::getColumnListing('dish'))) {
+//                        Schema::table('dish', function($table) {
+//                            $table->integer('out_queue')->nullable();
+//                        });
+//                    }
+//                    for ($i = 0; $i < \DB::table('project_dish')->where('project_id', $project->id)->get()->count(); $i++) {
+//
+//                    }
+//                }
             } else {
                 return false;
             }

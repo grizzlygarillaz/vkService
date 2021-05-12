@@ -89,13 +89,17 @@ class Photo extends Vk
     public function downloadFromYandex($link, $project = null, $folder = null)
     {
         $url = 'https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key=' . urlencode($link);
+        Log::info($url);
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4 );
+//        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4 );
         curl_setopt($ch, CURLOPT_URL, $url);
+//        curl_setopt( $ch, CURLOPT_CUSTOMREQUEST, 'GET' );
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = json_decode(curl_exec($ch));
+//        dd(curl_error($ch), curl_errno($ch));
         curl_close($ch);
-        if (!property_exists($response, 'href')) {
+//        dd($response);
+        if (!is_object($response) || !property_exists($response, 'href')) {
             throw new \Exception('С ссылкой что-то не так. Проверьте ссылку на файл.');
         }
         parse_str(parse_url($response->href)['query'], $params);
@@ -113,6 +117,7 @@ class Photo extends Vk
         $dir = $path;
         $filename = uniqid('yandex_');
         $path = $path . '/' . $filename . '.' . pathinfo($params['filename'])['extension'];
+        Log::info($path);
         Storage::put($path, file_get_contents($response->href));
         $result = [
             'path' => $path
