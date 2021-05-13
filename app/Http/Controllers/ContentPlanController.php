@@ -153,6 +153,9 @@ class ContentPlanController extends Controller
             $post->publish_date = $date;
             $post->author = Auth::user()->id;
             $post->post_type = $request->postType;
+            if ($post->post_type == 'dish') {
+                $post->object_id = 'queue';
+            }
             $post->text = $request->text;
             $post->image = $image;
             if ($request->cp) {
@@ -231,6 +234,9 @@ class ContentPlanController extends Controller
             $post->project_id = $project->id;
             $post->publish_date = $date;
             $post->post_type = $request->postType;
+            if ($post->post_type == 'dish') {
+                $post->object_id = 'queue';
+            }
             $post->text = $request->text;
             $post->image = $image;
             $post->author = Auth::user()->id;

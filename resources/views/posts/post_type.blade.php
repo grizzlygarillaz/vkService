@@ -1,9 +1,9 @@
 <div class="input-group">
     <label class="input-group-text" for="select-object">{{$typeName}}</label>
     <select class="form-select select-object" id="select-object" name="{{ $type }}">
-        <option value="" disabled >Выберите...</option>
+        <option value="" disabled {{ $selected ? '' : 'selected' }}>Выберите...</option>
         @if($type == 'dish')
-            <option value="queue" {{ !$selected || $selected == 'queue' ? 'selected' : ''}}>По очереди</option>
+            <option value="queue" {{ $selected == 'queue' ? 'selected' : ''}}>По очереди</option>
         @endif
         @if($objects)
             @foreach($objects as $object)
