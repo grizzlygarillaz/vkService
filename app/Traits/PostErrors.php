@@ -2,12 +2,16 @@
 
 namespace App\Traits;
 
+use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Models\Post;
 use Illuminate\Support\Facades\Log;
+use \App\Traits\ArrayFunc;
 
 trait PostErrors
 {
+    use ArrayFunc;
+
     public function checkError($message, $project, $post)
     {
         $errors = null;
@@ -38,31 +42,82 @@ trait PostErrors
         return $errors;
     }
 
-    public function checkPostExist($project) {
+    public function checkPostExist($project)
+    {
+        $postExist = new Post;
+        $publishedPosts = Post::where('project_id', $project)->where('publish_date', '>', date('Y-m-d', strtotime('-1 week')))->whereNotNull('vk_id')->get();
+        $postsList = null;
+        foreach ($publishedPosts as $published) {
+            $postsList[] = "-{$project}_{$published->vk_id}";
+//            if (!key_exists($published->vk_id, $vkPostponed)) {
+//                Post::where([['vk_id', $published->vk_id], ['project_id', $project]])->update(['vk_id' => null]);
+//            }
+        }
+
+        if (!empty($postsList)) {
+            $response = ['owner_id' => "-$project", 'count' => 50];
+            $postedVK = $postExist->apiResult('get', $response)['items'];
+            $response = ['posts' => implode(',', $postsList)];
+            $list = $postExist->apiResult('getById', $response);
+            foreach ($publishedPosts as $published) {
+                $found = $this->search_key_val($list, 'id', $published->vk_id, true);
+//                $found = array_search($published->vk_id, array_column($list, 'id'));
+                if (!empty($found)) {
+                    Post::where([['vk_id', $published->vk_id], ['project_id', $project]])->update(['published' => $found['post_type']]);
+//
+//                    if ($found['post_type'] == 'post' && $published->published == 'postpone' && $published->post_type == 'dish') {
+//                        Log::info('test');
+//                        $currentDish = \DB::table('project_dish')->find($published->object_id);
+//                        if (is_null($currentDish->queue)) {
+//                            $dishList = \DB::table('project_dish')->where('project_id', $project)->get();
+//                            $count = 0;
+//                        } else {
+//                            $dishList = \DB::table('project_dish')->where('project_id', $project)->where('queue', '<', $currentDish->queue)->get();
+//                            $count = $currentDish->queue;
+//                        }
+//                        foreach ($dishList as $projectDish) {
+//                            \DB::table('project_dish')->where('dish_id', $projectDish->dish_id)->update(['queue' => $count]);
+//                            $count++;
+//                        }
+//                        \DB::table('project_dish')->where('dish_id', $currentDish->id)->update(['queue' => $count]);
+//                    }
+                } else {
+                    $secondSearch = $this->search_key_val($postedVK, 'postponed_id', $published->vk_id, true);
+                    Log::info($secondSearch);
+                    if ($secondSearch && $published->published == 'postpone' && $published->post_type == 'dish') {
+                        $currentDish = \DB::table('project_dish')->where('dish_id', $published->object_id)->first();
+                        if (is_null($currentDish->queue)) {
+                            $dishList = \DB::table('project_dish')->where('project_id', $project)->get();
+                            $count = 0;
+                        } else {
+                            $dishList = \DB::table('project_dish')->where('project_id', $project)->where('queue', '>', $currentDish->queue)->orderBy('queue')->get();
+                            $count = $currentDish->queue;
+                        }
+                        foreach ($dishList as $projectDish) {
+                            \DB::table('project_dish')->where('dish_id', $projectDish->dish_id)->update(['queue' => $count]);
+                            $count++;
+                        }
+                        \DB::table('project_dish')->where('dish_id', $currentDish->dish_id)->update(['queue' => $count]);
+                        Post::where([['vk_id', $published->vk_id], ['project_id', $project]])->update(['vk_id' => $secondSearch['id']]);
+                        continue;
+                    }
+                    Post::where([['vk_id', $published->vk_id], ['project_id', $project]])->update(['vk_id' => null]);
+                }
+            }
+        }
+
         $vkPostponed = [];
         $response = [
             'owner_id' => "-$project",
             'filter' => 'postponed',
             'count' => 50
         ];
-        $postExist = new Post;
         $postponedVK = $postExist->apiResult('get', $response)['items'];
         foreach ($postponedVK as $postponed) {
             $vkPostponed[$postponed['id']] = $postponed;
         }
-
-        $publishedPosts = Post::where('project_id', $project)
-            ->where('publish_date', '>', date('Y-m-d H:i', strtotime("+3 hours", time())))
-            ->whereNotNull('vk_id')->get();
-        Log::info('postponed  ' . date('Y-m-d H:i:s', strtotime("+3 hours", time())), $publishedPosts->toArray());
-        foreach ($publishedPosts as $published) {
-            if (!key_exists($published->vk_id, $vkPostponed)) {
-                Post::where([['vk_id', $published->vk_id], ['project_id', $project]])->update(['vk_id' => null]);
-            }
-        }
-
         $busyTime = null;
-        $projectInfo = Project::find($project);
+
         foreach ($vkPostponed as $postponed) {
             $busyTime[] = ['start' => date('Y-m-d H:i:s', strtotime("+2 hours +30 minutes", $postponed['date'])), 'end' => date('Y-m-d H:i:s', strtotime("+3 hours +30 minutes", $postponed['date']))];
         }
@@ -84,7 +139,8 @@ trait PostErrors
         return $deferredBusy;
     }
 
-    public function checkStory ($story, $content) {
+    public function checkStory($story, $content)
+    {
         $errors = [];
 
         $storyDB = \DB::table('stories')->find($story);

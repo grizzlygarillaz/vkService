@@ -46,7 +46,11 @@ class Controller extends BaseController
     {
         $objects = [];
         foreach ($this->objectsOfProject as $key => $value) {
-            $objectIds = \DB::table("project_$key")->where('project_id', $project)->get();
+            if ($key == 'dish') {
+                $objectIds = \DB::table("project_$key")->where('project_id', $project)->orderBy('queue')->get();
+            } else {
+                $objectIds = \DB::table("project_$key")->where('project_id', $project)->get();
+            }
             if ($objectIds) {
                 foreach ($objectIds as $id) {
                     $objects[$key][] = \DB::table($key)->find($id->{$key . '_id'});

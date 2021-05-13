@@ -89,7 +89,6 @@ class Photo extends Vk
     public function downloadFromYandex($link, $project = null, $folder = null)
     {
         $url = 'https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key=' . urlencode($link);
-        Log::info($url);
         $ch = curl_init();
 //        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4 );
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -117,7 +116,6 @@ class Photo extends Vk
         $dir = $path;
         $filename = uniqid('yandex_');
         $path = $path . '/' . $filename . '.' . pathinfo($params['filename'])['extension'];
-        Log::info($path);
         Storage::put($path, file_get_contents($response->href));
         $result = [
             'path' => $path

@@ -308,7 +308,7 @@
 
 
 <script>
-    $(document).on('change', '.select-object', function () {
+    $('.select-object').change(function () {
         let data = {}
         data['object'] = $('option:selected', this).val()
         data['post'] = $(this).closest('.cp-card').attr('id')

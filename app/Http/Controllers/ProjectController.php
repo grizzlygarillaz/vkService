@@ -144,7 +144,7 @@ class ProjectController extends Controller
         }
         $loadErrors = null;
         $errorPost = $this->checkPostExist($project);
-        $contentPlan = \DB::table('content_plan_post')->where('content_plan', \DB::table('projects')->find($project)->content_plan)->get();
+//        $contentPlan = \DB::table('content_plan_post')->where('content_plan', \DB::table('projects')->find($project)->content_plan)->get();
         $posts = null;
         foreach (Post::where('project_id', $project)
                      ->where('content_plan', \DB::table('projects')->find($project)->content_plan)
@@ -157,9 +157,16 @@ class ProjectController extends Controller
                      }))
                      ->orderBy('vk_id')->orderBy('publish_date', $sort)->get() as $post) {
             $message = $this->replaceTags($project, $post->text);
+            $image = $post->image;
             if ($post->object_id) {
                 try {
-                    $message = $this->replaceTags($project, $post->text, $post->post_type, $post->object_id);
+                    $object = $post->object_id;
+                    if ($post->post_type == 'dish' && $post->object_id == 'queue') {
+                        $queueObject = \DB::table('project_dish')->where('project_id', $project)->orderBy('queue')->first();
+                        $object = $queueObject->dish_id;
+                        $image = \DB::table('dish')->find($object)->image_img_url;
+                    }
+                    $message = $this->replaceTags($project, $post->text, $post->post_type, $object);
                 } catch (\Exception $e) {
                     $loadErrors = ['Вы недавно обновляли данные товаров, могут быть ошибки в замене тегов'];
                 }
@@ -167,11 +174,11 @@ class ProjectController extends Controller
 
             $error = $this->checkError($message, $project, $post);
 
-            $photo = Photo::find($post->image);
+            $photo = Photo::find($image);
             if ($photo && file_exists($photo->path)) {
                 $photo = $photo->path;
                 if (preg_match('/^video/', mime_content_type($photo))) {
-                    $preview = Photo::find($post->image)->preview;
+                    $preview = Photo::find($image)->preview;
                     if ($preview) {
                         $photo = $preview;
                     }
@@ -243,8 +250,7 @@ class ProjectController extends Controller
     public function selectPostType(Request $request, $project)
     {
         $request->validate([
-            'post' => 'required|integer',
-            'object' => 'integer'
+            'post' => 'required|integer'
         ]);
         if (!key_exists($request->type, $this->objectsOfProject)) {
             return false;
@@ -252,11 +258,17 @@ class ProjectController extends Controller
         $columns = Schema::getColumnListing($request->type);
         $images = preg_grep('/^image_img/', Schema::getColumnListing($request->type));
         $object = \DB::table($request->type)->find($request->object);
-        if ($object) {
+        if ($object || $request->object == 'queue') {
             $post = Post::find($request->post);
             $post->object_id = $request->object;
-            if (empty($images)) {
-                $post->image = \DB::table('content_plan_post')->find($post->post_reference)->image;
+            if ($request->object == 'queue' || empty($images)) {
+                $reference = \DB::table('content_plan_post')->find($post->post_reference);
+                if ($reference) {
+                    $refImage = $reference->image;
+                } else {
+                    $refImage = null;
+                }
+                $post->image = $refImage;
             } else {
                 $post->image = $object->{array_shift($images)};
             }

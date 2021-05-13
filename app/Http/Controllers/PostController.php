@@ -291,20 +291,26 @@ class PostController extends Controller
                 return back()->withErrors('Ошибка отправки поста. Обратитесь к администратору');
             }
 
-            $message = $this->replaceTags($project->id, $post->text, $post->post_type, $post->object_id);
+            $object = $post->object_id;
+            $imageCheck = $post->image;
+            if ($post->post_type == 'dish' && $post->object_id == 'queue') {
+                $queueObject = \DB::table('project_dish')->where('project_id', $project->id)->orderBy('queue')->first();
+                $object = $queueObject->dish_id;
+                $imageCheck = \DB::table('dish')->find($object)->image_img_url;
+            }
+            $message = $this->replaceTags($project->id, $post->text, $post->post_type, $object);
             $timeZone = $project->time_zone < 0 ? $project->time_zone : "+{$project->time_zone}";
             $timeZone -= 3 + (2 * $timeZone);
             $date = date('d.m.Y H:i', strtotime("$timeZone hours", strtotime($post->publish_date)));
 
             $postClass = new Post;
-            $image = Photo::find($post->image)->path;
+            $image = Photo::find($imageCheck)->path;
             try {
                 if ($post->poll) {
                     $poll = PostController::getPoll($post->id);
-                    Log::info($poll);
                     $content = ["poll{$poll["owner_id"]}_{$poll['id']}"];
                     $postId = $postClass->sendDeferredPost($project->id, $message, $date, $post->mute, $content);
-                } elseif (!is_null($post->image) && file_exists($image)) {
+                } elseif (!is_null($imageCheck) && file_exists($image)) {
                     if (preg_match('/^video/', mime_content_type($image))) {
                         $content = (new Photo)->getVideoServer($project->id, $image);
                         $content = ["video{$content['owner_id']}_{$content['video_id']}"];
@@ -331,7 +337,6 @@ class PostController extends Controller
                     throw new \Exception('Неизвестная ошибка отправки публикации. Пожалуйста, обратитесь к администратору' . $e->getMessage());
                 }
             }
-            Log::info($postId);
             if (key_exists('post_id', $postId)) {
                 \DB::table('posts')->where('id', $post->id)->update(['vk_id' => $postId['post_id']]);
 //                if ($post->post_type == 'dish') {
