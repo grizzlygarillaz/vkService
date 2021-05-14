@@ -3,7 +3,7 @@
 <div id="project-{{$table}}-content">
     <header class="d-flex justify-content-between">
         <button class="btn btn-success mb-3 add-{{$table}}" data-bs-toggle="modal" data-bs-target="#add-{{$table}}">
-            Дабавить
+            Добавить
         </button>
         <div class="btn-group" style="height: fit-content;" role="group" aria-label="Basic radio toggle button group">
             <input type="radio" class="btn-check" name="{{$table}}-radio" id="active" autocomplete="off" checked>
