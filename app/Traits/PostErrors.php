@@ -86,18 +86,20 @@ trait PostErrors
                     Log::info($secondSearch);
                     if ($secondSearch && $published->published == 'postpone' && $published->post_type == 'dish') {
                         $currentDish = \DB::table('project_dish')->where('dish_id', $published->object_id)->first();
-                        if (is_null($currentDish->queue)) {
-                            $dishList = \DB::table('project_dish')->where('project_id', $project)->get();
-                            $count = 0;
-                        } else {
-                            $dishList = \DB::table('project_dish')->where('project_id', $project)->where('queue', '>', $currentDish->queue)->orderBy('queue')->get();
-                            $count = $currentDish->queue;
+                        if ($currentDish) {
+                            if (is_null($currentDish->queue)) {
+                                $dishList = \DB::table('project_dish')->where('project_id', $project)->get();
+                                $count = 0;
+                            } else {
+                                $dishList = \DB::table('project_dish')->where('project_id', $project)->where('queue', '>', $currentDish->queue)->orderBy('queue')->get();
+                                $count = $currentDish->queue;
+                            }
+                            foreach ($dishList as $projectDish) {
+                                \DB::table('project_dish')->where('dish_id', $projectDish->dish_id)->update(['queue' => $count]);
+                                $count++;
+                            }
+                            \DB::table('project_dish')->where('dish_id', $currentDish->dish_id)->update(['queue' => $count]);
                         }
-                        foreach ($dishList as $projectDish) {
-                            \DB::table('project_dish')->where('dish_id', $projectDish->dish_id)->update(['queue' => $count]);
-                            $count++;
-                        }
-                        \DB::table('project_dish')->where('dish_id', $currentDish->dish_id)->update(['queue' => $count]);
                         Post::where([['vk_id', $published->vk_id], ['project_id', $project]])->update(['vk_id' => $secondSearch['id']]);
                         continue;
                     }
