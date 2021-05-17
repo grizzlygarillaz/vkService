@@ -55,8 +55,9 @@ trait PostErrors
         }
 
         if (!empty($postsList)) {
-            $response = ['owner_id' => "-$project", 'count' => 50];
-            $postedVK = $postExist->apiResult('get', $response)['items'];
+//            $response = ['owner_id' => "-$project", 'count' => 50];
+//            $postedVK = $postExist->apiResult('get', $response)['items'];
+
             $response = ['posts' => implode(',', $postsList)];
             $list = $postExist->apiResult('getById', $response);
             foreach ($publishedPosts as $published) {
@@ -82,28 +83,29 @@ trait PostErrors
 //                        \DB::table('project_dish')->where('dish_id', $currentDish->id)->update(['queue' => $count]);
 //                    }
                 } else {
-                    $secondSearch = $this->search_key_val($postedVK, 'postponed_id', $published->vk_id, true);
-                    Log::info($secondSearch);
-                    if ($secondSearch && $published->published == 'postpone' && $published->post_type == 'dish') {
-                        $currentDish = \DB::table('project_dish')->where('dish_id', $published->object_id)->first();
-                        if ($currentDish) {
-                            if (is_null($currentDish->queue)) {
-                                $dishList = \DB::table('project_dish')->where('project_id', $project)->get();
-                                $count = 0;
-                            } else {
-                                $dishList = \DB::table('project_dish')->where('project_id', $project)->where('queue', '>', $currentDish->queue)->orderBy('queue')->get();
-                                $count = $currentDish->queue;
-                            }
-                            foreach ($dishList as $projectDish) {
-                                \DB::table('project_dish')->where('dish_id', $projectDish->dish_id)->update(['queue' => $count]);
-                                $count++;
-                            }
-                            \DB::table('project_dish')->where('dish_id', $currentDish->dish_id)->update(['queue' => $count]);
-                        }
-                        Post::where([['vk_id', $published->vk_id], ['project_id', $project]])->update(['vk_id' => $secondSearch['id']]);
-                        continue;
-                    }
-                    Post::where([['vk_id', $published->vk_id], ['project_id', $project]])->update(['vk_id' => null]);
+                    ////
+//                    $secondSearch = $this->search_key_val($postedVK, 'postponed_id', $published->vk_id, true);
+//                    Log::info($secondSearch);
+//                    if ($secondSearch && $published->published == 'postpone' && $published->post_type == 'dish') {
+//                        $currentDish = \DB::table('project_dish')->where('dish_id', $published->object_id)->first();
+//                        if ($currentDish) {
+//                            if (is_null($currentDish->queue)) {
+//                                $dishList = \DB::table('project_dish')->where('project_id', $project)->get();
+//                                $count = 0;
+//                            } else {
+//                                $dishList = \DB::table('project_dish')->where('project_id', $project)->where('queue', '>', $currentDish->queue)->orderBy('queue')->get();
+//                                $count = $currentDish->queue;
+//                            }
+//                            foreach ($dishList as $projectDish) {
+//                                \DB::table('project_dish')->where('dish_id', $projectDish->dish_id)->update(['queue' => $count]);
+//                                $count++;
+//                            }
+//                            \DB::table('project_dish')->where('dish_id', $currentDish->dish_id)->update(['queue' => $count]);
+//                        }
+//                        Post::where([['vk_id', $published->vk_id], ['project_id', $project]])->update(['vk_id' => $secondSearch['id']]);
+//                        continue;
+//                    }
+//                    Post::where([['vk_id', $published->vk_id], ['project_id', $project]])->update(['vk_id' => null]);
                 }
             }
         }
