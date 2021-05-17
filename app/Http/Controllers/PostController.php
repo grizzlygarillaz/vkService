@@ -304,7 +304,7 @@ class PostController extends Controller
             $date = date('d.m.Y H:i', strtotime("$timeZone hours", strtotime($post->publish_date)));
 
             $postClass = new Post;
-            $image = Photo::find($imageCheck)->path;
+            $image = is_null($imageCheck) ? null : Photo::find($imageCheck)->path;
             try {
                 if ($post->poll) {
                     $poll = PostController::getPoll($post->id);
@@ -352,7 +352,7 @@ class PostController extends Controller
             } else {
                 return false;
             }
-            sleep(1);
+            usleep(400);
         }
         return true;
     }

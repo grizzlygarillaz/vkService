@@ -21,7 +21,10 @@
   <component name="ChangeListManager">
     <list default="true" id="103f7f45-6800-4b0f-9bf9-18137483506e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/PostController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/PostController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Vk.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Vk.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Traits/PostErrors.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Traits/PostErrors.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -252,7 +255,7 @@
       <workItem from="1620796861696" duration="16561000" />
       <workItem from="1620886114226" duration="15911000" />
       <workItem from="1620990498928" duration="3264000" />
-      <workItem from="1621229469079" duration="1379000" />
+      <workItem from="1621229469079" duration="8938000" />
     </task>
     <servers />
   </component>
@@ -280,10 +283,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="723" y="430" key="ComposerInitDialogKey/0.0.1920.1040@0.0.1920.1040" timestamp="1620760304128" />
-    <state x="794" y="439" key="NewPhpFileDialog" timestamp="1620813097125">
+    <state x="794" y="439" key="NewPhpFileDialog" timestamp="1621235088131">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="794" y="439" key="NewPhpFileDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1620813097125" />
+    <state x="794" y="439" key="NewPhpFileDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1621235088131" />
     <state x="832" y="86" key="SettingsEditor" timestamp="1620760229431">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

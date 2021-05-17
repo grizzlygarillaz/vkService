@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
+use Mockery\Exception;
 
 class Vk extends Model
 {
     use HasFactory;
 
     protected $access_token;
-    public $version = "5.101";
+    public $version = "5.130";
     public $methodType = '';
 
     //c9496840600eb0c32b3b06a57c81d0569967d19d85d6b431e46d2f4adbe315d132681999a06a7a5289d68
@@ -21,9 +22,19 @@ class Vk extends Model
         $this->access_token = $token;
     }
 
-    public function apiResult($method, array $responses = [])
+    public static function request ($methodType, $method, $response = [])
     {
-        $url = "https://api.vk.com/method/{$this->methodType}.$method";
+        try {
+            return (new self)->apiResult($method, $response, $methodType);
+        } catch (\Exception $e) {
+            return $e->getCode() . " | " . $e->getMessage();
+        }
+    }
+
+    public function apiResult($method, array $responses = [], $methodType = null)
+    {
+        $methodType = $methodType === null ? $this->methodType : $methodType;
+        $url = "https://api.vk.com/method/$methodType.$method";
 //        $request = "https://api.vk.com/method/{$this->methodType}.$method/?access_token={$this->access_token}&v={$this->version}&" . http_build_query($responses);
         $data = ['access_token' => $this->access_token, 'v' => $this->version];
         $data += $responses;

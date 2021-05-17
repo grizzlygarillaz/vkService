@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\StreamingVkController as StreamingVkControllerAlias;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
@@ -119,6 +120,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/settings/dish_type/delete_filter/{filter}', [SettingController::class, 'deleteFilter']);
     });
 
+    Route::get('/streaming/auth', [StreamingVkControllerAlias::class, 'auth']);
 
     Route::post('/object/delete/{table}/{id}', [ObjectController::class, 'delete']);
 });

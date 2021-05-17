@@ -83,7 +83,6 @@ trait PostErrors
 //                        \DB::table('project_dish')->where('dish_id', $currentDish->id)->update(['queue' => $count]);
 //                    }
                 } else {
-                    ////
 //                    $secondSearch = $this->search_key_val($postedVK, 'postponed_id', $published->vk_id, true);
 //                    Log::info($secondSearch);
 //                    if ($secondSearch && $published->published == 'postpone' && $published->post_type == 'dish') {
