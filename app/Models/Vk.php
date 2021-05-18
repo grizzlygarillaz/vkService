@@ -27,7 +27,7 @@ class Vk extends Model
         try {
             return (new self)->apiResult($method, $response, $methodType);
         } catch (\Exception $e) {
-            return $e->getCode() . " | " . $e->getMessage();
+            return $e->getCode() . " | " . $e->getMessage() . $method . implode(', ',$response);
         }
     }
 
@@ -52,7 +52,7 @@ class Vk extends Model
             return $requestResult['response'];
         } else {
             Log::error('Vk error', $requestResult['error']);
-            throw new \Exception('Ошибка ' . $requestResult['error']['error_code'] . ': ' . $requestResult['error']['error_msg'] );
+            throw new \Exception('Ошибка ' . $requestResult['error']['error_code'] . ': ' . $requestResult['error']['error_msg']  . implode(', ', $data) );
         }
     }
 
