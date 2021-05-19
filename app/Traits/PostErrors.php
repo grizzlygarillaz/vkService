@@ -45,15 +45,47 @@ trait PostErrors
     public function checkPostExist($project)
     {
         $postExist = new Post;
-        $publishedPosts = Post::where('project_id', $project)->where('publish_date', '>', date('Y-m-d', strtotime('-1 week')))->whereNotNull('vk_id')->get();
+        $busyTime = null;
+        $publishedPosts = Post::where([
+            ['project_id', '=', $project],
+            ['publish_date', '>', date('Y-m-d', strtotime('+4 hour'))],
+        ])
+            ->whereNotNull('vk_id')->get();
         $postsList = null;
-//        foreach ($publishedPosts as $published) {
-//            $postsList[] = "-{$project}_{$published->vk_id}";
-//            if (!key_exists($published->vk_id, $vkPostponed)) {
-//                Post::where([['vk_id', $published->vk_id], ['project_id', $project]])->update(['vk_id' => null]);
-//            }
+        foreach ($publishedPosts as $published) {
+            $postsList[] = "-{$project}_{$published->vk_id}";
+        }
+        if (!empty($postsList)) {
+//
+//        foreach ($vkPostponed as $postponed) {
+//            $busyTime[] = ['start' => date('Y-m-d H:i:s', strtotime("+2 hours +30 minutes", $postponed['date'])), 'end' => date('Y-m-d H:i:s', strtotime("+3 hours +30 minutes", $postponed['date']))];
 //        }
+            $response = ['posts' => implode(',', $postsList)];
+            $list = $postExist->apiResult('getById', $response);
+//            foreach ($publishedPosts as $published) {
+//                $found = $this->search_key_val($list, 'id', $published->vk_id, true);
+//                $found = array_search($published->vk_id, array_column($list, 'id'));
+//                if (empty($found)) {
+//                    Post::where([['vk_id', $published->vk_id], ['project_id', $project]])->update(['vk_id' => null]);
+//                }
+//            }
 
+//            Log::info($publishedPosts);
+            foreach ($list as $item) {
+                $busyTime[] = [
+                    'start' => date('Y-m-d H:i:s', strtotime("+2 hours +30 minutes", $item['date'])),
+                    'end' => date('Y-m-d H:i:s', strtotime("+3 hours +30 minutes", $item['date']))
+                ];
+                $publishedPosts = $publishedPosts->filter(function ($value) use ($item) {
+                    return $value->vk_id != $item['id'];
+                });
+            }
+
+            foreach ($publishedPosts as $published) {
+                Post::where([['vk_id', $published->vk_id], ['project_id', $project]])->update(['vk_id' => null]);
+            }
+            Log::info($publishedPosts);
+        }
 //        if (!empty($postsList)) {
 //            $response = ['owner_id' => "-$project", 'count' => 50];
 //            $postedVK = $postExist->apiResult('get', $response)['items'];
@@ -126,19 +158,19 @@ trait PostErrors
 //        }
 //
         $deferredBusy = [];
-//        $deferredPosts = Post::where('project_id', $project)->whereNull('vk_id')->get();
-//        if ($deferredPosts) {
-//            foreach ($deferredPosts as $deferred) {
-//                if ($busyTime) {
-//                    foreach ($busyTime as $time) {
-//                        if ($deferred->publish_date >= $time['start'] && $deferred->publish_date <= $time['end']) {
-//                            $deferredBusy[$deferred->id] = 'В отложенных записях имеется пост в схожее время! Пожалуйста измените время публикации.';
-//                            continue;
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        $deferredPosts = Post::where('project_id', $project)->whereNull('vk_id')->get();
+        if ($deferredPosts) {
+            if ($busyTime) {
+                foreach ($deferredPosts as $deferred) {
+                    foreach ($busyTime as $time) {
+                        if ($deferred->publish_date >= $time['start'] && $deferred->publish_date <= $time['end']) {
+                            $deferredBusy[$deferred->id] = 'В отложенных записях имеется пост в схожее время! Пожалуйста измените время публикации.';
+                            continue;
+                        }
+                    }
+                }
+            }
+        }
         return $deferredBusy;
     }
 

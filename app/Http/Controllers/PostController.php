@@ -234,7 +234,7 @@ class PostController extends Controller
         throw new \Exception('Что-то пошло не так. Обратитесь к администратору (или к тому, от кого вы получили ссылку).');
     }
 
-    public function commentViewed ($post)
+    public function commentViewed($post)
     {
         $post = Post::find($post);
         if ($post) {
@@ -281,7 +281,7 @@ class PostController extends Controller
     public function sendDeferredPost(Request $request, $post)
     {
         $posts = $post == 'all' ? $request->posts : [$post];
-        if(empty($posts)) {
+        if (empty($posts)) {
             throw new \Exception('Нет постов на отправку');
         }
         foreach ($posts as $post) {
@@ -310,7 +310,7 @@ class PostController extends Controller
                     $poll = PostController::getPoll($post->id);
                     $content = ["poll{$poll["owner_id"]}_{$poll['id']}"];
                     $postId = $postClass->sendDeferredPost($project->id, $message, $date, $post->mute, $content);
-                } elseif (!is_null($imageCheck) && file_exists($image)) {
+                } elseif ($imageCheck && file_exists($image)) {
                     if (preg_match('/^video/', mime_content_type($image))) {
                         $content = (new Photo)->getVideoServer($project->id, $image);
                         $content = ["video{$content['owner_id']}_{$content['video_id']}"];
@@ -338,17 +338,27 @@ class PostController extends Controller
                 }
             }
             if (key_exists('post_id', $postId)) {
-                \DB::table('posts')->where('id', $post->id)->update(['vk_id' => $postId['post_id']]);
-//                if ($post->post_type == 'dish') {
-//                    if (!in_array('out_queue', Schema::getColumnListing('dish'))) {
-//                        Schema::table('dish', function($table) {
-//                            $table->integer('out_queue')->nullable();
-//                        });
-//                    }
-//                    for ($i = 0; $i < \DB::table('project_dish')->where('project_id', $project->id)->get()->count(); $i++) {
-//
-//                    }
-//                }
+                \DB::table('posts')->where('id', $post->id)->update(['vk_id' => $postId['post_id'], 'object_id' => $object]);
+                if ($post->post_type == 'dish' && $post->object_id) {
+                    $currentDish = \DB::table('project_dish')->where('dish_id', $post->object_id)->first();
+                    if ($post->object_id == 'queue') {
+                        $currentDish = \DB::table('project_dish')->where('project_id', $project->id)->orderBy('queue')->first();
+                    }
+                    if ($currentDish) {
+                        if (is_null($currentDish->queue)) {
+                            $dishList = \DB::table('project_dish')->where('project_id', $project->id)->get();
+                            $count = 0;
+                        } else {
+                            $dishList = \DB::table('project_dish')->where('project_id', $project->id)->where('queue', '>', $currentDish->queue)->orderBy('queue')->get();
+                            $count = $currentDish->queue;
+                        }
+                        foreach ($dishList as $projectDish) {
+                            \DB::table('project_dish')->where('dish_id', $projectDish->dish_id)->update(['queue' => $count]);
+                            $count++;
+                        }
+                        \DB::table('project_dish')->where('dish_id', $currentDish->dish_id)->update(['queue' => $count]);
+                    }
+                }
             } else {
                 return false;
             }
