@@ -332,7 +332,7 @@ class PostController extends Controller
                 }
             } catch (\Exception $e) {
                 if (preg_match('/invalid publish_date param/', $e->getMessage()) || preg_match('/post is already scheduled/', $e->getMessage())) {
-                    throw new \Exception('В отложенных записях имеется пост со схожей датой! Пожалуйста, измените дату публикации.');
+                    throw new \Exception('В отложенных записях имеется пост со схожей датой, либо до публикации слишком мало времени! Пожалуйста, измените дату публикации.');
                 } else {
                     throw new \Exception('Неизвестная ошибка отправки публикации. Пожалуйста, обратитесь к администратору' . $e->getMessage());
                 }

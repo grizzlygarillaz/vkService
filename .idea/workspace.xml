@@ -19,73 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="103f7f45-6800-4b0f-9bf9-18137483506e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/PostController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/PostController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Traits/PostErrors.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Traits/PostErrors.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/dish/201313982/yandex_609aefdde6493.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/dish/201313982/yandex_609aefdee7f17.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/dish/201313982/yandex_609aefdfbfc9d.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/dish/201313982/yandex_609aefe88d6ee.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/dish/201313982/yandex_609aeff03a557.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/dish/201313982/yandex_609aeff85e15f.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/dish/201313982/yandex_609aefffb6b4a.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/dish/201313982/yandex_609af00896a09.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/dish/201313982/yandex_609af00fee3ae.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/dish/201313982/yandex_609af017cd4a2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/dish/201313982/yandex_609af018e1002.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/dish/201313982/yandex_609af019c987f.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/dish/201313982/yandex_609af01aa2446.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/dish/201313982/yandex_609af01b9b5e4.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/dish/201313982/yandex_609af01d0f99c.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/dish/201313982/yandex_609af01ed9a94.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/dish/201313982/yandex_609af01fa1442.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/dish/201313982/yandex_609af0216fc52.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/dish/201313982/yandex_609af0224f6b2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/dish/201313982/yandex_609af0234280f.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2170/post/Горы.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2170/post/Зима.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2170/post/Мишки.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2170/post/Москва.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2170/post/Санкт-Петербург.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2170/story/pexels-c-technical-5857311.mp4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2171/post/Горы.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2171/post/Зима.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2171/post/Мишки.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2171/post/Москва.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2171/post/Санкт-Петербург.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2171/story/pexels-c-technical-5857311.mp4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2172/post/Горы.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2172/post/Зима.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2172/post/Мишки.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2172/post/Москва.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2172/post/Санкт-Петербург.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2172/story/pexels-c-technical-5857311.mp4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2173/post/Горы.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2173/post/Зима.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2173/post/Мишки.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2173/post/Москва.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2173/post/Санкт-Петербург.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2173/story/pexels-c-technical-5857311.mp4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2174/post/Горы.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2174/post/Зима.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2174/post/Мишки.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2174/post/Москва.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2174/post/Санкт-Петербург.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2174/story/pexels-c-technical-5857311.mp4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2175/post/Горы.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2175/post/Зима.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2175/post/Мишки.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2175/post/Москва.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2175/post/Санкт-Петербург.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2175/story/pexels-c-technical-5857311.mp4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2176/post/Горы.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2176/post/Зима.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2176/post/Мишки.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2176/post/Москва.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2176/post/Санкт-Петербург.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/public/storage/201313982/dish/2176/story/pexels-c-technical-5857311.mp4" beforeDir="false" />
-    </list>
+    <list default="true" id="103f7f45-6800-4b0f-9bf9-18137483506e" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -317,6 +251,7 @@
       <workItem from="1620990498928" duration="3264000" />
       <workItem from="1621229469079" duration="11515000" />
       <workItem from="1621319589519" duration="32564000" />
+      <workItem from="1621408287269" duration="855000" />
     </task>
     <servers />
   </component>
