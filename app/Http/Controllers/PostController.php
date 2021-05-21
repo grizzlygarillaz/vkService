@@ -364,6 +364,7 @@ class PostController extends Controller
             }
             usleep(400);
         }
+        sleep(1);
         return true;
     }
 
