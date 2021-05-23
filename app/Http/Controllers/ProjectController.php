@@ -105,7 +105,7 @@ class ProjectController extends Controller
                         $this->objectsOfProject[$story->stories_type]['name'],
                     'image' => $photo,
                     'users' => (new Stories)->getAuthorEditor($story)
-                    ];
+                ];
             }
 
             $objects = $this->getObjects($project);
@@ -201,6 +201,17 @@ class ProjectController extends Controller
             if (key_exists($post->id, $errorPost)) {
                 $error[] = $errorPost[$post->id];
             }
+
+            $categories = [];
+            foreach (DishType::all() as $dishType) {
+                foreach (\DB::table('project_dish')->where('project_id', $project)->get() as $dishId) {
+                    $dish = \DB::table('dish')->find($dishId->dish_id);
+                    if (strstr(mb_strtolower($dish->name), mb_strtolower($dishType->filter)) && !in_array($dishType->name, $categories)) {
+                        $categories[] = $dishType->name;
+                        break;
+                    }
+                }
+            }
             $posts[] = [
                 'error' => $error,
                 'post' => $post,
@@ -209,7 +220,7 @@ class ProjectController extends Controller
                     'Контентный'
                     :
                     $this->objectsOfProject[$post->post_type]['name'],
-                'categories' => DishType::select('name')->groupBy('name')->get(),
+                'categories' => $categories,
                 'image' => $photo,
                 'text' => $message,
                 'users' => (new Post)->getAuthorEditor($post)];

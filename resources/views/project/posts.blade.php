@@ -192,9 +192,6 @@
     $('#add-post').click(function () {
         $.ajax({
             url: '/projects/modal/add-post/' + $('.project-header').attr('project'),
-            error: function (msg) {
-                swal('Ошибка!', msg.responseJSON.message, "error")
-            },
             success: function (data) {
                 $('.place-modal').html(data)
                 $('.place-modal .modal').modal('show')
@@ -214,9 +211,6 @@
                     $.ajax({
                         method: 'post',
                         url: '/posts/delete/' + post,
-                        error: function (msg) {
-                            swal('Ошибка!', msg.responseJSON.message, "error")
-                        },
                         success: function () {
                             $('.project-page input:checked').click()
                         }
@@ -233,9 +227,6 @@
             method: 'post',
             url: '/projects/post/send/' + post,
             data: data,
-            error: function (msg) {
-                swal('Ошибка!', msg.responseJSON.message, "error")
-            },
             success: function (data) {
                 $('.project-page input:checked').click()
             }
@@ -294,9 +285,6 @@
         let post = $(this).closest('.cp-card').attr('id')
         $.ajax({
             url: '/posts/edit/' + post,
-            error: function (msg) {
-                console.log(msg)
-            },
             success: function (data) {
                 $('.modal-post-edit').html(data)
                 $('.modal-post-edit').modal('show')
@@ -317,9 +305,6 @@
         $.ajax({
             url: '/projects/post/selectType/' + id,
             data: data,
-            error: function (msg) {
-                console.log(msg)
-            },
             success: function (data) {
                 console.log(data)
                 $('.project-page input:checked').click()

@@ -444,6 +444,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             error: function (msg) {
+                console.log(msg)
                 swal("Ошибка", msg.responseJSON.message, "error")
             }
         });

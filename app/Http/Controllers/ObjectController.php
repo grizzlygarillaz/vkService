@@ -32,11 +32,6 @@ class ObjectController extends Controller
         $post = Post::find($request->post);
         $filters = DishType::where('name', $request->category)->get();
         $allFilters = DishType::all();
-        if ($request->category == 'other') {
-            foreach ($allFilters as $filter) {
-
-            }
-        }
 
         foreach ($dishes as $dish) {
             $dish = \DB::table('dish')->find($dish->dish_id);

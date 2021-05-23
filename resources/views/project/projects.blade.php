@@ -62,6 +62,7 @@
                         })
                     },
                     error: function (msg) {
+                        console.log(msg)
                         swal('Ошибка!', msg.responseJSON.message, "error")
                         $('.project-content').html('');
                         $('input[type=radio]').each(function () {
@@ -133,9 +134,6 @@
                     method: 'post',
                     url: '{{ route('getPromoLayout') }}',
                     data: {project: project, promo: promo, post: post, layout: check},
-                    error: function (msg) {
-                        console.log(msg)
-                    },
                     success: function (data) {
                         $('#post-text-area-' + post).val(data)
                     }
@@ -148,9 +146,6 @@
                     $.ajax({
                         url: '/projects/post/promo/' + promo,
                         data: {post: post},
-                        error: function (msg) {
-                            console.log(msg)
-                        },
                         success: function (data) {
                             $data = $(data.html)
                             $('#changePhotoPost' + post).attr('id', 'to-remove')
@@ -206,9 +201,6 @@
                 $.ajax({
                     url: '/content_plan/post/tags/' + $('option:selected', this).val(),
                     data: {textarea: 'post-text'},
-                    error: function (msg) {
-                        console.log(msg)
-                    },
                     success: function (data) {
                         $('.tag_list_poll').html(data)
                     }
