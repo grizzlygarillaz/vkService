@@ -70,21 +70,21 @@ class PostController extends Controller
             'publishDate' => 'required|date_format:d.m.Y H:i|after:today',
             'background_poll' => 'required'
         ]);
-        if ($request->background_poll != 'photo') {
-            $background = '"background":' . $request->background_poll;
-        } else {
+        $anonym = $request->anonymous ? 1 : 0;
+        if ($request->background_poll == 'photo') {
             $request->validate(['image' => 'required']);
         }
-        $answer = json_encode($request->answer);
-        $anonym = $request->anonymous ? 1 : 0;
-        $poll = '{"answer":' . $answer . ',"question":"' . $request->question . '","anonymous":"$anonym"'
-            . (isset($background) ? ",$background" : '') . '}';
-        $image = new Photo;
-        if (!is_null($request->image)) {
-            $image = $image->downloadFromYandex($request->image)['id'];
+        $jsonData = [
+            'answer' => $request->answer,
+            'question' => $request->question,
+            'anonymous' => $anonym
+        ];
+        if ($request->background_poll == 'photo') {
+            $request->validate(['image' => 'required']);
         } else {
-            $image = null;
+            $jsonData += ['background' => $request->background_poll];
         }
+        $poll = json_encode($jsonData);
         $updateData += ['poll' => $poll];
         $updateData += ['edited_by' => Auth::user()->id];
 

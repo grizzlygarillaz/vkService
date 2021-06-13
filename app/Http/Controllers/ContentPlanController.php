@@ -193,15 +193,21 @@ class ContentPlanController extends Controller
             'cp' => 'required',
             'background_poll' => 'required'
         ]);
-        if ($request->background_poll != 'photo') {
-            $background = '"background":' . $request->background_poll;
-        } else {
+        $anonym = $request->anonymous ? 1 : 0;
+        if ($request->background_poll == 'photo') {
             $request->validate(['image' => 'required']);
         }
-        $answer = json_encode($request->answer);
-        $anonym = $request->anonymous ? 1 : 0;
-        $poll = '{"answer":' . $answer . ',"question":"' . $request->question . '","anonymous":' . $anonym
-            . (isset($background) ? ",$background" : '') . '}';
+        $jsonData = [
+            'answer' => $request->answer,
+            'question' => $request->question,
+            'anonymous' => $anonym
+        ];
+        if ($request->background_poll == 'photo') {
+            $request->validate(['image' => 'required']);
+        } else {
+            $jsonData += ['background' => $request->background_poll];
+        }
+        $poll = json_encode($jsonData);
         $image = new Photo;
         if (!is_null($request->image)) {
             $image = $image->downloadFromYandex($request->image)['id'];
@@ -350,21 +356,29 @@ class ContentPlanController extends Controller
                 'cp' => 'required',
                 'background_poll' => 'required'
             ]);
-            if ($request->background_poll != 'photo') {
-                $background = '"background":' . $request->background_poll;
-            } else {
+            $anonym = $request->anonymous ? 1 : 0;
+            if ($request->background_poll == 'photo') {
                 $request->validate(['image' => 'required']);
             }
-            $answer = json_encode($request->answer);
-            $anonym = $request->anonymous ? 1 : 0;
-            $poll = '{"answer":' . $answer . ',"question":"' . $request->question . '","anonymous":' . $anonym
-                . (isset($background) ? ",$background" : '') . '}';
+            $jsonData = [
+                'answer' => $request->answer,
+                'question' => $request->question,
+                'anonymous' => $anonym
+            ];
+            if ($request->background_poll == 'photo') {
+                $request->validate(['image' => 'required']);
+            } else {
+                $jsonData += ['background' => $request->background_poll];
+            }
+            $poll = json_encode($jsonData);
             $image = new Photo;
             if (!is_null($request->image)) {
                 $image = $image->downloadFromYandex($request->image)['id'];
             } else {
                 $image = null;
             }
+            $updateData += ['poll' => $poll];
+            $updateData['image'] = $image;
         }
 
         if ($request->notification) {
