@@ -121,9 +121,22 @@ class Photo extends Vk
             Storage::makeDirectory($path);
         }
         $dir = $path;
-        $filename = uniqid('yandex_', true);
-        $path = $path . '/' . $filename . '.' . pathinfo($params['filename'])['extension'];
-        Storage::put($path, file_get_contents($response->href));
+        $filename = uniqid('yandex_');
+        $path = $path . '/' . date('Y_m') . '/' . date('d') . '/' . $filename . '.' . pathinfo($params['filename'])['extension'];
+
+        $ch = curl_init();
+// Grab URL and pass it to the variable
+
+        curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_URL, $response->href);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+//
+//        $context = stream_context_create(array('http' => array('header'=>'Connection: close\r\n')));
+//        file_get_contents($response->href,false,$context);
+        Storage::put($path, curl_exec($ch));
+        curl_close($ch);
         $result = [
             'path' => $path
         ];
