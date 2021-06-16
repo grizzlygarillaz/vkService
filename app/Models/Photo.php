@@ -41,7 +41,8 @@ class Photo extends Vk
         return $this->apiResult('getAlbums', $response);
     }
 
-    public function deletePhoto(int $id) {
+    public function deletePhoto(int $id)
+    {
         if (DB::table('photo')->find($id)) {
             $photo = DB::table('photo')->find($id)->path;
             if (file_exists($photo)) {
@@ -82,20 +83,26 @@ class Photo extends Vk
         return $this->apiResult('getUploadServer', $response);
     }
 
-    public static function downloadYandex($link, $project = null, $folder = null) {
+    public static function downloadYandex($link, $project = null, $folder = null)
+    {
         return (new self())->downloadFromYandex($link, $project, $folder);
     }
 
     public function downloadFromYandex($link, $project = null, $folder = null)
     {
         $url = 'https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key=' . urlencode($link);
+//        $ch = curl_init();
+////        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4 );
+//        curl_setopt($ch, CURLOPT_URL, $url);
+////        curl_setopt( $ch, CURLOPT_CUSTOMREQUEST, 'GET' );
+//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+////        dd(curl_error($ch), curl_errno($ch));
         $ch = curl_init();
-//        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4 );
-        curl_setopt($ch, CURLOPT_URL, $url);
-//        curl_setopt( $ch, CURLOPT_CUSTOMREQUEST, 'GET' );
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt_array($ch, [
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true
+        ]);
         $response = json_decode(curl_exec($ch));
-//        dd(curl_error($ch), curl_errno($ch));
         curl_close($ch);
 //        dd($response);
         if (!is_object($response) || !property_exists($response, 'href')) {
@@ -110,11 +117,11 @@ class Photo extends Vk
         if (!is_null($project)) {
             $path .= "/$project";
         }
-        if(!Storage::exists($path)) {
+        if (!Storage::exists($path)) {
             Storage::makeDirectory($path);
         }
         $dir = $path;
-        $filename = uniqid('yandex_');
+        $filename = uniqid('yandex_', true);
         $path = $path . '/' . $filename . '.' . pathinfo($params['filename'])['extension'];
         Storage::put($path, file_get_contents($response->href));
         $result = [
@@ -137,7 +144,8 @@ class Photo extends Vk
      * @param $border path to border
      * @param string $prefix prefix of output filename
      */
-    public static function makeBorder ($photo, $border, $prefix = 'bordered') {
+    public static function makeBorder($photo, $border, $prefix = 'bordered')
+    {
         $img = Image::make($photo);
         if ($img->width() != $img->height()) {
             throw new \Exception('Изображение не подходящего разрешения для вставки виньетки. Необходимое соотношение сторон 1:1.');
@@ -147,7 +155,8 @@ class Photo extends Vk
         return $path;
     }
 
-    public static function makeGif ($video, $path, $filename) {
+    public static function makeGif($video, $path, $filename)
+    {
         $videoPath = $video;
 
 // The gif will have the same dimension. You can change that of course if needed.
@@ -160,7 +169,8 @@ class Photo extends Vk
         return $gifPath;
     }
 
-    public function toAlbumFromYandex($photoPaths, $albumId, $groupId) {
+    public function toAlbumFromYandex($photoPaths, $albumId, $groupId)
+    {
         $server = $this->getUploadServer($albumId, $groupId);
         $photoCount = 1;
         $photos = [];
@@ -168,14 +178,14 @@ class Photo extends Vk
         foreach ($photoPaths as $key => $path) {
             $path_parts = pathinfo($path['path']);
             $type = $path_parts['extension'];
-            $photos += ["file$photoCount" => curl_file_create(Storage::path($path['path']), $type, $path['id']. $path_parts['basename'])];
+            $photos += ["file$photoCount" => curl_file_create(Storage::path($path['path']), $type, $path['id'] . $path_parts['basename'])];
             $photoCount++;
         }
         /**
          * Do refactor
          */
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4 );
+        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: multipart/form-data",
             'Connection: Keep-Alive']);
@@ -198,7 +208,7 @@ class Photo extends Vk
 //        $responses = $responses->apiResult('save', $responseParam);
         $ch = curl_init();
         $url = 'https://api.vk.com/method/photos.save';
-        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4 );
+        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: multipart/form-data",
             'Connection: Keep-Alive']);
@@ -291,7 +301,7 @@ class Photo extends Vk
         return ['photoIds' => $photosId];
     }
 
-    public function getWallServer (int $groupId, $image)
+    public function getWallServer(int $groupId, $image)
     {
         $wallServer = $this->customRequest('photos', 'getWallUploadServer', ['group_id' => $groupId])['upload_url'];
         $path_parts = pathinfo($image);
@@ -309,7 +319,7 @@ class Photo extends Vk
         return $response;
     }
 
-    public function saveWallPhoto ($groupId, $photo)
+    public function saveWallPhoto($groupId, $photo)
     {
         $response = [
             'group_id' => $groupId
@@ -318,7 +328,8 @@ class Photo extends Vk
         return $this->apiResult('saveWallPhoto', $response);
     }
 
-    public function getPollPhoto ($groupId, $image) {
+    public function getPollPhoto($groupId, $image)
+    {
         $pollServer = $this->customRequest('polls', 'getPhotoUploadServer', ['owner_id' => -$groupId])['upload_url'];
         $path_parts = pathinfo($image);
         $type = $path_parts['extension'];
@@ -336,7 +347,7 @@ class Photo extends Vk
         return Vk::customStaticRequest('polls', 'savePhoto', $response);
     }
 
-    public function getVideoServer ($groupId, $video)
+    public function getVideoServer($groupId, $video)
     {
         $response = [
             'name' => uniqid("{$groupId}_"),

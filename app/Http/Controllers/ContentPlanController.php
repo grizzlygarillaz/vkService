@@ -113,7 +113,11 @@ class ContentPlanController extends Controller
     {
         $image = new Photo;
         if (!is_null($request->image)) {
-            $image = $image->downloadFromYandex($request->image)['id'];
+            try {
+                $image = $image->downloadFromYandex($request->image, null, 'content_plan')['id'];
+            } catch (\Exception $e) {
+                back()->withErrors($e->getMessage());
+            }
         } else {
             $image = null;
         }
@@ -459,7 +463,11 @@ class ContentPlanController extends Controller
         Log::info('Deleted post by : ' . Auth::user()->id . " ----> " . \DB::table('content_plan_post')->find($post)->id );
         $removeImage = \DB::table('content_plan_post')->find($post)->image;
         if (!empty($removeImage)) {
-            $image->deletePhoto($removeImage);
+            try {
+                $image->deletePhoto($removeImage);
+            } catch (\Exception $e) {
+                Log::info($e->getMessage());
+            }
         } else {
             $image = null;
         }
